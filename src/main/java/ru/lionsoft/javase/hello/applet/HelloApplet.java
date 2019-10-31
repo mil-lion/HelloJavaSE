@@ -1,5 +1,5 @@
 /*
- * File:    EntityFactory.java
+ * File:    HelloApplet.java
  * Project: HelloJavaSE
  * Date:    31 окт. 2019 г. 23:03:58
  * Author:  Igor Morenko <morenko at lionsoft.ru>
