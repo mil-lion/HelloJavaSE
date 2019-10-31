@@ -1,9 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * File:    EntityFactory.java
+ * Project: HelloJavaSE
+ * Date:    31 окт. 2019 г. 23:03:58
+ * Author:  Igor Morenko <morenko at lionsoft.ru>
+ * 
+ * Copyright 2005-2019 LionSoft LLC. All rights reserved.
  */
-package ru.test.applet;
+package ru.lionsoft.javase.hello.applet;
 
 import java.applet.Applet;
 import java.awt.Graphics;
@@ -24,27 +27,33 @@ import java.awt.Graphics;
 */
 
 /**
- *
- * @author Администратор
+ * Пример аплета
+ * @author Igor Morenko <morenko at lionsoft.ru>
  */
 public class HelloApplet extends Applet {
 
-    @Override
-    public void destroy() {
-        super.destroy(); //To change body of generated methods, choose Tools | Templates.
-        System.out.println("destroy my applet!");
-    }
-
+    // Инициализация аплета
     @Override
     public void init() {
-        super.init(); //To change body of generated methods, choose Tools | Templates.
-        System.out.println("init my applet!");
+        super.init();
+        System.out.println("@@@@ init my applet!");
     }
 
+    // Отрисовка содержимого окна аплета
     @Override
     public void paint(Graphics g) {
-        //super.paint(g); //To change body of generated methods, choose Tools | Templates.
-        g.drawString("Hello from My Applet to '" + getParameter("toWho") + "'!", 10, 10);
+        System.out.println("@@@@ paint my applet!");
+        g.drawString("Hello from My Applet to '" 
+                + getParameter("toWho")         // имя берем из параметров аплета
+                + "'!", 10, 10);
         g.drawLine(100, 50, 150, 100);
     }
+
+    // Уничтожение аплета
+    @Override
+    public void destroy() {
+        super.destroy(); 
+        System.out.println("@@@@ destroy my applet!");
+    }
 }
+
