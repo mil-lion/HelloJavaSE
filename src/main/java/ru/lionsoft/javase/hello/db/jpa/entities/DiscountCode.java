@@ -20,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -50,6 +51,7 @@ public class DiscountCode implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "discountCode")
     private List<Customer> customers;
 
+    
     public DiscountCode() {
     }
 
@@ -57,6 +59,7 @@ public class DiscountCode implements Serializable {
         this.code = discountCode;
     }
 
+    @XmlAnyAttribute
     public String getCode() {
         return code;
     }
@@ -82,6 +85,7 @@ public class DiscountCode implements Serializable {
         this.customers = customers;
     }
 
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -100,6 +104,7 @@ public class DiscountCode implements Serializable {
                 || (this.code != null && !this.code.equals(other.code)));
     }
 
+    
     @Override
     public String toString() {
         return "DiscountCode{" 

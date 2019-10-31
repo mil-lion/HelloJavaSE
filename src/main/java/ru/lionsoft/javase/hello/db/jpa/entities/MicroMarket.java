@@ -19,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -57,6 +58,7 @@ public class MicroMarket implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "microMarket")
     private List<Customer> customers;
 
+    
     public MicroMarket() {
     }
 
@@ -64,6 +66,8 @@ public class MicroMarket implements Serializable {
         this.zipCode = zipCode;
     }
 
+    
+    @XmlAttribute
     public String getZipCode() {
         return zipCode;
     }
@@ -105,6 +109,7 @@ public class MicroMarket implements Serializable {
         this.customers = customers;
     }
 
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -123,6 +128,7 @@ public class MicroMarket implements Serializable {
                 || (this.zipCode != null && !this.zipCode.equals(other.zipCode)));
     }
 
+    
     @Override
     public String toString() {
         return "MicroMarket{" 
@@ -132,6 +138,5 @@ public class MicroMarket implements Serializable {
                 + ", areaWidth=" + areaWidth 
                 + '}';
     }
-
-    
+   
 }
