@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="circle" type="circle"/>
+
+  <xs:element name="fillCircle" type="fillCircle"/>
+
+  <xs:element name="fillOval" type="fillOval"/>
+
+  <xs:element name="fillRectangle" type="fillRectangle"/>
+
+  <xs:element name="line" type="line"/>
+
+  <xs:element name="oval" type="oval"/>
+
+  <xs:element name="rectangle" type="rectangle"/>
+
+  <xs:element name="shapes" type="shapes"/>
+
+  <xs:element name="text" type="text"/>
+
+  <xs:complexType name="shapes">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="line"/>
+        <xs:element ref="text"/>
+        <xs:element ref="rectangle"/>
+        <xs:element ref="fillRectangle"/>
+        <xs:element ref="oval"/>
+        <xs:element ref="fillOval"/>
+        <xs:element ref="circle"/>
+        <xs:element ref="fillCircle"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="abstractShape" abstract="true">
+    <xs:sequence>
+      <xs:element name="color" type="xs:string" minOccurs="0"/>
+      <xs:element name="x" type="xs:int"/>
+      <xs:element name="y" type="xs:int"/>
+    </xs:sequence>
+    <xs:attribute name="order" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="line">
+    <xs:complexContent>
+      <xs:extension base="abstractShape">
+        <xs:sequence>
+          <xs:element name="x2" type="xs:int"/>
+          <xs:element name="y2" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="text">
+    <xs:complexContent>
+      <xs:extension base="abstractShape">
+        <xs:sequence>
+          <xs:element name="text" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="rectangle">
+    <xs:complexContent>
+      <xs:extension base="abstractShape">
+        <xs:sequence>
+          <xs:element name="height" type="xs:int"/>
+          <xs:element name="width" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="fillRectangle" final="extension restriction">
+    <xs:complexContent>
+      <xs:extension base="rectangle">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="oval">
+    <xs:complexContent>
+      <xs:extension base="abstractShape">
+        <xs:sequence>
+          <xs:element name="height" type="xs:int"/>
+          <xs:element name="width" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="fillOval" final="extension restriction">
+    <xs:complexContent>
+      <xs:extension base="oval">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="circle">
+    <xs:complexContent>
+      <xs:extension base="oval">
+        <xs:sequence>
+          <xs:element name="radius" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="fillCircle" final="extension restriction">
+    <xs:complexContent>
+      <xs:extension base="circle">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+

@@ -1,0 +1,83 @@
+plugins {
+    id 'application'
+    id 'java'
+    id 'eclipse'
+    //    id 'jacoco'
+}
+
+description = 'Примеры классов для изучения основ Java SE'
+group = 'ru.lionsoft'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = '13'
+mainClassName = 'ru.lionsoft.javase.hello.HelloApp'
+
+ext.license = file("${rootDir}/licenseheader.txt") 
+
+repositories {
+    mavenCentral()
+}
+
+//java {
+//    sourceCompatibility = JavaVersion.VERSION_HIGHER
+//    targetCompatibility = JavaVersion.VERSION_HIGHER
+//
+//}
+
+jar {
+    manifest {
+        attributes 'Main-Class': "${mainClassName}"
+    }
+}
+
+//tasks.withType(JavaCompile) {
+//    options.compilerArgs += "--enable-preview"
+//}
+//
+//tasks.withType(Test) {
+//    jvmArgs += "--enable-preview"
+//}
+//
+//tasks.withType(JavaExec) {
+//    jvmArgs += '--enable-preview'
+//}
+
+//compileJava {
+//    options.compilerArgs += ["--enable-preview"]
+//}
+//
+//test {
+//    jvmArgs '--enable-preview'
+//}
+//
+//run {
+//    jvmArgs '--enable-preview'
+//}
+
+dependencies {
+    // JAXB API
+//    compile 'javax.xml.bind:jaxb-api:2.3.1'
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1' 
+    // JAXB RI
+    
+    // JSON-P API
+    compile group: 'javax.json', name:'javax.json-api', version: '1.1.4'
+    
+    // JSONB API
+    compile group: 'javax.json.bind', name: 'javax.json.bind-api', version: '1.0.0-RC2'
+    // JSONB RI
+    
+    // Apache Derby JDBC Driver
+    // https://mvnrepository.com/artifact/org.apache.derby/derbyclient
+    compile group: 'org.apache.derby', name: 'derbyclient', version: '10.14.2.0'
+
+    // JPA API
+    // https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
+    compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+    // EclipseLink JPA
+    // https://mvnrepository.com/artifact/org.eclipse.persistence/org.eclipse.persistence.jpa
+    compile group: 'org.eclipse.persistence', name: 'org.eclipse.persistence.jpa', version: '2.7.5'
+
+    
+    // Test
+    testCompile 'junit:junit:4.12'
+}

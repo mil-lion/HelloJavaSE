@@ -1,0 +1,82 @@
+
+[
+    {
+        "color": "magenta",
+        "order": 1,
+        "x": 10,
+        "y": 10,
+        "x2": 50,
+        "y2": 20
+    },
+    {
+        "color": "blue",
+        "order": 1,
+        "x": 200,
+        "y": 200,
+        "height": 80,
+        "width": 150
+    },
+    {
+        "color": "cyan",
+        "order": 1,
+        "x": 210,
+        "y": 210,
+        "height": 60,
+        "width": 130
+    },
+    {
+        "color": "darkGray",
+        "x": 450,
+        "y": 100,
+        "height": 120,
+        "order": 1,
+        "width": 150
+    },
+    {
+        "color": "pink",
+        "x": 450,
+        "y": 100,
+        "height": 100,
+        "order": 1,
+        "width": 130
+    },
+    {
+        "color": "blue",
+        "order": 1,
+        "x": 410,
+        "y": 110,
+        "text": "Виват Цезарь!"
+    },
+    {
+        "color": "darkGray",
+        "order": 1,
+        "x": 420,
+        "y": 130,
+        "text": "Виват Император!"
+    },
+    {
+        "color": "#FF80FF40",
+        "order": 1,
+        "x": 30,
+        "y": 150,
+        "text": "Привет Мир!"
+    },
+    {
+        "color": "#FF4080FF",
+        "x": 130,
+        "y": 70,
+        "height": 80,
+        "order": 1,
+        "width": 80,
+        "radius": 40
+    },
+    {
+        "color": "#FF80C080",
+        "x": 130,
+        "y": 70,
+        "height": 60,
+        "order": 1,
+        "width": 60,
+        "radius": 30
+    }
+]
