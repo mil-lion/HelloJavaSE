@@ -9,61 +9,100 @@
 package ru.lionsoft.javase.hello.thread;
 
 /**
- *
+ * Пример создания потоков, использование наследования класса Thread
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
 public class HelloThread {
-
-    /**
-     *
-     * @author Igor Morenko <morenko at lionsoft.ru>
-     */
+    
     static class JThread extends Thread {
 
-        JThread(String name) {
+        public JThread(String name) {
             super(name);
         }
 
         @Override
         public void run() {
-            final String currentThreadName = Thread.currentThread().getName();
-          
-            System.out.printf("%s started... \n", currentThreadName);
+            final String threadName = getName();
+            System.out.printf("%s started...\n", threadName);
             try {
                 Thread.sleep(500);
-            } catch (InterruptedException e) {
-                System.out.println("Thread has been interrupted");
+            } catch (InterruptedException ex) {
+                System.out.println("Thread has been interrupted!");
             }
-            System.out.printf("%s finished... \n", currentThreadName);
+            System.out.printf("%s finished...\n", threadName);
         }
     }
+    
+    static class JThreadInterrupt extends Thread {
 
+        public JThreadInterrupt(String name) {
+            super(name);
+        }
+
+        @Override
+        public void run() {
+            final String threadName = getName();
+            System.out.printf("%s started...\n", threadName);
+            int counter = 1;
+            while (!isInterrupted()) {
+                System.out.println("Loop #" + counter++);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    System.out.println("Thread has been interrupted!");
+                    System.out.println("isInterrupted = " + isInterrupted()); // false
+//                    interrupt(); // повторно устанавливаем флаг прерывания потока!
+                    break; // выход из цикла!
+                }
+            }
+            System.out.printf("%s finished...\n", threadName);
+        }
+    }
+    
+    /**
+     * Главный метод для запуска
+     * @param args аргументы командной строки
+     * @throws InterruptedException если было вызвано прерывание потока
+     */
     public static void main(String[] args) throws InterruptedException {
         
-        System.out.println("#### Current Thread info:");
-        Thread t = Thread.currentThread(); // получаем главный (текущий) поток
+        // Информация о главном потоке
+        Thread t = Thread.currentThread(); // получаем главный поток
         System.out.println(t.getName()); // main
-        System.out.println(t); // main
-
-        System.out.println("\n#### Thread test:");
+        System.out.println(t); // Thread[main,5,main]
+        
+        // Запускаем 10 потоков
         System.out.println("Main thread started...");
-        for (int i = 1; i < 6; i++) {
+        for (int i = 0; i < 10; i++) {
             new JThread("JThread #" + i).start();
         }
+        System.out.println("Main thread finished...");
+        
+        Thread.sleep(1000);
+        
+        // Запуск потока без ожидания его завершения
+        System.out.println("Main thread started...");
+        new JThread("JThread").start();
+        System.out.println("Main thread finished...");
+
+        Thread.sleep(1000);
+        
+        // Запускаем поток и ждем его завершения
+        System.out.println("Main thread started...");
+        t = new JThread("JThread"); // создаем поток
+        t.start(); // запускаем поток
+        t.join(); // ждем завершения потока
         System.out.println("Main thread finished...");
 
         Thread.sleep(1000);
 
-        System.out.println("\n#### Wait end of Thread:");
+        // Запускаем поток и прерываем его вызовом метода interrupt()
         System.out.println("Main thread started...");
-        t = new JThread("JThread ");
+        t = new JThreadInterrupt("JThreadInterrupt");
         t.start();
-        try {
-            t.join(); // Waits for this thread to die.
-        } catch (InterruptedException e) {
-            System.out.printf("%s has been interrupted", t.getName());
-        }
+        Thread.sleep(1000);
+        t.interrupt(); // вызов прерывания потока
+        t.join();
         System.out.println("Main thread finished...");
-
     }
 }
