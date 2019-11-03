@@ -52,12 +52,10 @@ import ru.lionsoft.javase.hello.gui.shapes.Text;
  */
 public class TestXmlGUI extends JComponent {
     
-    /**
-     * Журнал для класса
-     */
+    /** Журнал для класса */
     private static final Logger LOG = Logger.getLogger(TestXmlGUI.class.getName());
 
-    // TODO: заменить на колекцию!
+    /** Список фигур */
     private final List<ShapeDraw> shapes = new ArrayList<>();
     
     // Кэш для списка аннотированных методов классов
@@ -73,33 +71,37 @@ public class TestXmlGUI extends JComponent {
         // Инициализация списка фигур
         
         // Создаем другие фигуры разработанные другими программистами
-//        shapes.add(new Line(Color.MAGENTA, 10, 10, 50, 20));
-//        shapes.add(new Rectangle(Color.BLUE, 200, 200, 150, 80));
-//        shapes.add(new FillRectangle(Color.CYAN, 210, 210, 130, 60));
-//        shapes.add(new Oval(Color.DARK_GRAY, 450, 100, 150, 120));
-//        shapes.add(new FillOval(Color.PINK, 450, 100, 130, 100));
-//        shapes.add(new Text(Color.BLUE, 410, 110, "Виват Цезарь!"));
-//        shapes.add(new Text(Color.DARK_GRAY, 420, 130, "Виват Император!"));
-//        shapes.add(new Text(new Color(128, 255, 64), 30, 150, "Привет Мир!"));
-//        shapes.add(new Circle(new Color(64, 128, 255), 130, 70, 40));
-//        shapes.add(new FillCircle(new Color(128, 192, 128), 130, 70, 30));
+        shapes.add(new Line(Color.MAGENTA, 10, 10, 50, 20));
+        shapes.add(new Rectangle(Color.BLUE, 200, 200, 150, 80));
+        shapes.add(new FillRectangle(Color.CYAN, 210, 210, 130, 60));
+        shapes.add(new Oval(Color.DARK_GRAY, 450, 100, 150, 120));
+        shapes.add(new FillOval(Color.PINK, 450, 100, 130, 100));
+        shapes.add(new Text(Color.BLUE, 410, 110, "Виват Цезарь!"));
+        shapes.add(new Text(Color.DARK_GRAY, 420, 130, "Виват Император!"));
+        shapes.add(new Text(new Color(128, 255, 64), 30, 150, "Привет Мир!"));
+        shapes.add(new Circle(new Color(64, 128, 255), 130, 70, 40));
+        shapes.add(new FillCircle(new Color(128, 192, 128), 130, 70, 30));
         
-        try {
-            loadShapesFromXmlFile("shapes.xml");
-        } catch (JAXBException ex) {
-            LOG.log(Level.SEVERE, null, ex);
+        // Читаем фигуры из XML файла
+        File shapesFile = new File("shapes.xml");
+        if (shapesFile.exists()) {
+            try {
+                loadShapesFromXmlFile(shapesFile);
+            } catch (JAXBException ex) {
+                LOG.log(Level.SEVERE, null, ex);
+            }
         }
         
         // Сортируем фигуры по порядку отрисовки
         Collections.sort(shapes, (s1, s2) -> Integer.compare(s1.getOrder(), s2.getOrder()));
 
+        // Записываем фигуры в XML файл
         try {
             saveXSD("shapes.xsd");
             saveShapesToXmlFile("shapes2.xml");
         } catch (JAXBException | IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
-        
         
         // Анализируем фигуры на аннатоции метов @PreDraw и @PostDraw
         analyzeAnnotationForShapes();
@@ -169,28 +171,28 @@ public class TestXmlGUI extends JComponent {
      * Метод анализирует классы всех фигур на аннотацию методов @PreDraw и @PostDraw 
      */
     private void analyzeAnnotationForShapes() {
+        System.out.println("@@@@ analyze annotation methods");
         for (Object obj : shapes) {
-            // Проверка на существование объекта (для коллекции нет необходимости проверять)
-            if (obj != null) {
-                final Class objClass = obj.getClass();
-                // Если в словаре есть описание класса, то анализировать не нужно повторно
-                if (preMethods.containsKey(objClass) || postMethods.containsKey(objClass))
-                    continue;
+            if (obj == null) continue; // пропускаем
 
-                // Перебираем все публичные методы объекта
-                for (Method method : objClass.getMethods()) {
-                    // @PreDraw
-                    PreDraw preDraw = method.getAnnotation(PreDraw.class);
-                    if (preDraw != null) {
-                        // Метод аннотирован @PreDraw
-                        addMethodToMap(preMethods, objClass, method);
-                    }
-                    // @PostDraw
-                    PostDraw postDraw = method.getAnnotation(PostDraw.class);
-                    if (postDraw != null) {
-                        // Метод аннотирован @PostDraw
-                        addMethodToMap(postMethods, objClass, method);
-                    }
+            final Class objClass = obj.getClass();
+            // Если в словаре есть описание класса, то анализировать не нужно повторно
+            if (preMethods.containsKey(objClass) || postMethods.containsKey(objClass))
+                continue;
+
+            // Перебираем все публичные методы объекта
+            for (Method method : objClass.getMethods()) {
+                // @PreDraw
+                PreDraw preDraw = method.getAnnotation(PreDraw.class);
+                if (preDraw != null) {
+                    // Метод аннотирован @PreDraw
+                    addMethodToMap(preMethods, objClass, method);
+                }
+                // @PostDraw
+                PostDraw postDraw = method.getAnnotation(PostDraw.class);
+                if (postDraw != null) {
+                    // Метод аннотирован @PostDraw
+                    addMethodToMap(postMethods, objClass, method);
                 }
             }
         }
@@ -239,6 +241,7 @@ public class TestXmlGUI extends JComponent {
      * Метод вычисления статистики для фигур
      */
     private void calculateStatistics() {
+        System.out.println("@@@@ analize shapes and calculate statistics");
         // Опредяем агрегаторы и счетчики
         double sumSquare = 0; // сумма площади всех фигур (необходимое кол-во краски для отрисовки фигур)
         int count = 0; // кол-во фигур
@@ -346,16 +349,21 @@ public class TestXmlGUI extends JComponent {
 
     /**
      * Загрузить фигуры из файла в XML формате
-     * @param filename имя файла
+     * @param file имя файла
      * @throws JAXBException ошибка при чтении файла
      */
-    private void loadShapesFromXmlFile(String filename) throws JAXBException {
+    private void loadShapesFromXmlFile(File file) throws JAXBException {
+        System.out.println("@@@@ load shapes form XML file");
         // Создаем контекст JAXB
-        JAXBContext context = JAXBContext.newInstance(ShapeXmlRoot.class, AbstractShape.class, Line.class, Rectangle.class, FillRectangle.class, Oval.class, FillOval.class, Text.class, Circle.class, FillCircle.class);
+        JAXBContext context = JAXBContext.newInstance(ShapeXmlRoot.class, 
+                AbstractShape.class, Line.class, 
+                Rectangle.class, FillRectangle.class, 
+                Oval.class, FillOval.class, Text.class, 
+                Circle.class, FillCircle.class);
         // Создаем Unmarshaller
         Unmarshaller unmarshaller = context.createUnmarshaller();
         // Разбираем XML 
-        ShapeXmlRoot root = (ShapeXmlRoot)unmarshaller.unmarshal(new File(filename));
+        ShapeXmlRoot root = (ShapeXmlRoot)unmarshaller.unmarshal(file);
         shapes.addAll(root.getShapes());
     }
 }

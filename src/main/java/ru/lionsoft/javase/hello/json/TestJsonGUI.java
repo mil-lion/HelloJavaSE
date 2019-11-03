@@ -10,6 +10,7 @@ package ru.lionsoft.javase.hello.json;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -57,10 +58,10 @@ public class TestJsonGUI extends JComponent {
      */
     private static final Logger LOG = Logger.getLogger(TestJsonGUI.class.getName());
 
-    // TODO: заменить на колекцию!
+    /** Список фигур */
     private final List<ShapeDraw> shapes = new ArrayList<>();
     
-    // Кэш для списка аннотированных методов классов
+    // Кэш для списка аннотированных методов классов фигур
     private final Map<Class, List<Method>> preMethods = new HashMap<>();
     private final Map<Class, List<Method>> postMethods = new HashMap<>();
 
@@ -83,22 +84,26 @@ public class TestJsonGUI extends JComponent {
         shapes.add(new Text(new Color(128, 255, 64), 30, 150, "Привет Мир!"));
         shapes.add(new Circle(new Color(64, 128, 255), 130, 70, 40));
         shapes.add(new FillCircle(new Color(128, 192, 128), 130, 70, 30));
+
+        // Читаем фигуры из файла в формате JSON, если есть
+        File shapesFile = new File("shapes.json");
+        if (shapesFile.exists()) {
+            try {
+                loadShapesFromJsonFile(shapesFile);
+            } catch (FileNotFoundException | JAXBException ex) {
+                LOG.log(Level.SEVERE, null, ex);
+            }
+        }
         
-//        try {
-//            loadShapesFromJsonFile("shapes.json");
-//        } catch (JAXBException ex) {
-//            LOG.log(Level.SEVERE, null, ex);
-//        }
-        
-        // Сортируем фигуры по порядку отрисовки
+        // Сортируем фигуры по порядку отрисовки (order)
         Collections.sort(shapes, (s1, s2) -> Integer.compare(s1.getOrder(), s2.getOrder()));
 
+        // Записываем фигуры в файл в формате JSON
         try {
             saveShapesToJsonFile("shapes2.json");
         } catch (JsonbException | IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
-        
         
         // Анализируем фигуры на аннатоции метов @PreDraw и @PostDraw
         analyzeAnnotationForShapes();
@@ -168,28 +173,28 @@ public class TestJsonGUI extends JComponent {
      * Метод анализирует классы всех фигур на аннотацию методов @PreDraw и @PostDraw 
      */
     private void analyzeAnnotationForShapes() {
+        System.out.println("@@@@ analyze annotation methods");
         for (Object obj : shapes) {
-            // Проверка на существование объекта (для коллекции нет необходимости проверять)
-            if (obj != null) {
-                final Class objClass = obj.getClass();
-                // Если в словаре есть описание класса, то анализировать не нужно повторно
-                if (preMethods.containsKey(objClass) || postMethods.containsKey(objClass))
-                    continue;
+            if (obj == null) continue; // пропускаем
 
-                // Перебираем все публичные методы объекта
-                for (Method method : objClass.getMethods()) {
-                    // @PreDraw
-                    PreDraw preDraw = method.getAnnotation(PreDraw.class);
-                    if (preDraw != null) {
-                        // Метод аннотирован @PreDraw
-                        addMethodToMap(preMethods, objClass, method);
-                    }
-                    // @PostDraw
-                    PostDraw postDraw = method.getAnnotation(PostDraw.class);
-                    if (postDraw != null) {
-                        // Метод аннотирован @PostDraw
-                        addMethodToMap(postMethods, objClass, method);
-                    }
+            final Class objClass = obj.getClass();
+            // Если в словаре есть описание класса, то анализировать не нужно повторно
+            if (preMethods.containsKey(objClass) || postMethods.containsKey(objClass))
+                continue;
+
+            // Перебираем все публичные методы объекта
+            for (Method method : objClass.getMethods()) {
+                // @PreDraw
+                PreDraw preDraw = method.getAnnotation(PreDraw.class);
+                if (preDraw != null) {
+                    // Метод аннотирован @PreDraw
+                    addMethodToMap(preMethods, objClass, method);
+                }
+                // @PostDraw
+                PostDraw postDraw = method.getAnnotation(PostDraw.class);
+                if (postDraw != null) {
+                    // Метод аннотирован @PostDraw
+                    addMethodToMap(postMethods, objClass, method);
                 }
             }
         }
@@ -238,6 +243,7 @@ public class TestJsonGUI extends JComponent {
      * Метод вычисления статистики для фигур
      */
     private void calculateStatistics() {
+        System.out.println("@@@@ analize shapes and calculate statistics");
         // Опредяем агрегаторы и счетчики
         double sumSquare = 0; // сумма площади всех фигур (необходимое кол-во краски для отрисовки фигур)
         int count = 0; // кол-во фигур
@@ -307,6 +313,7 @@ public class TestJsonGUI extends JComponent {
      * Сохранить фигуры в файле в JSON формате 
      * @param filename имя файла
      * @throws JAXBException ошибка при сохранении
+     * @throws IOException ошибка ввода/вывода
      */
     private void saveShapesToJsonFile(String filename) throws JsonbException, IOException {
         System.out.println("@@@@ save shapes to JSON file");
@@ -324,14 +331,16 @@ public class TestJsonGUI extends JComponent {
     
     /**
      * Загрузить фигуры из файла в JSON формате
-     * @param filename имя файла
+     * @param file ссылка на файл
      * @throws JAXBException ошибка при чтении файла
+     * @throws FileNotFoundException если файл не найден
      */
-    private void loadShapesFromJsonFile(String filename) throws JAXBException, FileNotFoundException {
+    private void loadShapesFromJsonFile(File file) throws JAXBException, FileNotFoundException {
+        System.out.println("@@@@ load shapes from JSON file");
         // Создаем построитель JSON
         Jsonb jsonb = JsonbBuilder.create();
         // Десерилизация объекта из формат JSON
-        ShapeXmlRoot root = jsonb.fromJson(new FileReader(filename), ShapeXmlRoot.class);
+        ShapeXmlRoot root = jsonb.fromJson(new FileReader(file), ShapeXmlRoot.class);
         shapes.addAll(root.getShapes());
     }
 }

@@ -54,17 +54,39 @@ jar {
 //}
 
 dependencies {
+    /* ########### JAXB ############ */
+
     // JAXB API
-//    compile 'javax.xml.bind:jaxb-api:2.3.1'
-    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1' 
-    // JAXB RI
+    // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+
+    // JAXB Runtime
+    // https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime
+    compile group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
+
+    // JAXB Core (XJC, JXC and Runtime modules)
+    // https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-core
+    //compile group: 'org.glassfish.jaxb', name: 'jaxb-core', version: '2.3.0.1'
     
+    /* ########### JSON-P/B ############ */
+
     // JSON-P API
-    compile group: 'javax.json', name:'javax.json-api', version: '1.1.4'
+    // https://mvnrepository.com/artifact/javax.json/javax.json-api
+    compile group: 'javax.json', name: 'javax.json-api', version: '1.1.4'
+
+    // Glassfish JSON-P Provider
+    // https://mvnrepository.com/artifact/org.glassfish/javax.json
+    compile group: 'org.glassfish', name: 'javax.json', version: '1.1.4'
+
+    // JSON-B API
+    // https://mvnrepository.com/artifact/javax.json.bind/javax.json.bind-api
+    compile group: 'javax.json.bind', name: 'javax.json.bind-api', version: '1.0'
     
-    // JSONB API
-    compile group: 'javax.json.bind', name: 'javax.json.bind-api', version: '1.0.0-RC2'
-    // JSONB RI
+    // Yasson JSON-B Provider
+    // https://mvnrepository.com/artifact/org.eclipse/yasson
+    compile group: 'org.eclipse', name: 'yasson', version: '1.0.5'
+    
+    /* ########### JPA ############ */
     
     // Apache Derby JDBC Driver
     // https://mvnrepository.com/artifact/org.apache.derby/derbyclient
@@ -73,7 +95,8 @@ dependencies {
     // JPA API
     // https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
     compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
-    // EclipseLink JPA
+    
+    // EclipseLink JPA Provider
     // https://mvnrepository.com/artifact/org.eclipse.persistence/org.eclipse.persistence.jpa
     compile group: 'org.eclipse.persistence', name: 'org.eclipse.persistence.jpa', version: '2.7.5'
 
