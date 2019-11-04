@@ -17,7 +17,8 @@ import java.util.Objects;
  * @param <T> тип данных измерения коробки (ширина, высота, длина)
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
-public class Box<T extends Number> implements Serializable, AutoCloseable, Comparable<Box> { 
+public class Box<T extends Number> 
+        implements Serializable, AutoCloseable, Comparable<Box> { 
     
     private static final long serialVersionUID = 1L;
     
@@ -37,13 +38,13 @@ public class Box<T extends Number> implements Serializable, AutoCloseable, Compa
      */
     public static enum TyepSize {
         /** По умолчанию */
-        DEFAULT,
+        Default,
         /** Малая */
-        SMALL,
+        Small,
         /** Средняя */
-        MEDIUM,
+        Medium,
         /** Большая */
-        LARGE
+        Large
     }
     
     // ************* Static Variable **************
@@ -230,15 +231,9 @@ public class Box<T extends Number> implements Serializable, AutoCloseable, Compa
      *  больше 0 если первая коробка больше другой
      */
     public static int compare(Box b1, Box b2) {
-        if (b1 == b2) {
-            return 0;
-        }
-        if (b1 == null) {
-            return -1;
-        }
-        if (b2 == null) {
-            return 1;
-        }
+        if (b1 == b2) return 0;
+        if (b1 == null) return -1;
+        if (b2 == null) return 1;
         return Double.compare(b1.getVolume(), b2.getVolume());
     }
     
@@ -253,7 +248,7 @@ public class Box<T extends Number> implements Serializable, AutoCloseable, Compa
     
     /**
      * Метод закрытия коробки
-     * (втоматическое закрытие объекта, реализация интерфейса Autoclosable)
+     * (автоматическое закрытие объекта, реализация интерфейса Autoclosable)
      */
     @Override
     public void close() {
@@ -309,19 +304,19 @@ public class Box<T extends Number> implements Serializable, AutoCloseable, Compa
      */
     public Box(TyepSize type) {
         switch (type) {
-            case SMALL:
+            case Small:
                 width = (T)Integer.valueOf(1);
                 height = (T)Integer.valueOf(2);
                 length = (T)Integer.valueOf(3);
                 break;
 
-            case MEDIUM:
+            case Medium:
                 width = (T)Integer.valueOf(4);
                 height = (T)Integer.valueOf(5);
                 length = (T)Integer.valueOf(6);
                 break;
 
-            case LARGE:
+            case Large:
                 width = (T)Integer.valueOf(7);
                 height = (T)Integer.valueOf(8);
                 length = (T)Integer.valueOf(9);

@@ -55,8 +55,8 @@ public class HelloArray {
 
         // Массив объектов
         Box[] boxArray = {
-            new Box(Box.TyepSize.LARGE), new Box(Box.TyepSize.SMALL), 
-            new Box(Box.TyepSize.MEDIUM), new Box(10)
+            new Box(Box.TyepSize.Large), new Box(Box.TyepSize.Small), 
+            new Box(Box.TyepSize.Medium), new Box(10)
         };
         System.out.println("boxArray = " + Arrays.toString(boxArray));
 
@@ -82,11 +82,13 @@ public class HelloArray {
                 return -o1.compareTo(o2);
             }
         });
-        System.out.println("boxArray(desc, anonymouse) = " + Arrays.toString(boxArray));
+        System.out.println("boxArray(desc, anonymous) = " + Arrays.toString(boxArray));
 
         // Сортировка по возрастанию c использованием лямбда
         boxArray[0] = new Box(10);
-        Arrays.sort(boxArray, (Box box1, Box box2)->box1.compareTo(box2));
+        Arrays.sort(boxArray, (Box box1, Box box2) -> box1.compareTo(box2)); // way 1
+        Arrays.sort(boxArray, (b1, b2) -> b1.compareTo(b2)); // way 2
+        Arrays.sort(boxArray, Box::compare); // way 3
         System.out.println("boxArray(asc, lambda) = " + Arrays.toString(boxArray));
     }
 

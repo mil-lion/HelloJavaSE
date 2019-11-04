@@ -35,9 +35,9 @@ public class HelloCollection {
         
         // Колекция коробок
         List<Box<Integer>> boxes = new ArrayList<>();
-        boxes.add(new Box(Box.TyepSize.LARGE));
-        boxes.add(new Box(Box.TyepSize.SMALL)); 
-        boxes.add(new Box(Box.TyepSize.MEDIUM));
+        boxes.add(new Box(Box.TyepSize.Large));
+        boxes.add(new Box(Box.TyepSize.Small)); 
+        boxes.add(new Box(Box.TyepSize.Medium));
         boxes.add(new Box(10));
         System.out.println("boxes = " + boxes);
 
