@@ -49,6 +49,10 @@ public class HelloApp {
         // binary
         System.out.println("\nBinary: 0b1011001");
         app.printIntegerValue(0b1011001);
+        
+        app.vaTest(10);
+        app.vaTest(1, 2, 3);
+        app.vaTest();
     }
 
     /**
@@ -203,5 +207,18 @@ public class HelloApp {
         System.out.println("hex(x) = 0x" + Integer.toHexString(x));
         // Binary
         System.out.println("bin(x) = 0b" + Integer.toBinaryString(x));
+    }
+    
+    /**
+     * Пример метода с переменным числом параметров
+     * @param v массив параметров
+     */
+    public void vaTest(int... v) {
+        System.out.println("ru.lionsoft.javase.hello.HelloApp.vaTest()");
+        System.out.println("Number of args: " + v.length);
+        System.out.println("Contents:");
+        for (int x : v) {
+            System.out.println(x);
+        }
     }
 }
