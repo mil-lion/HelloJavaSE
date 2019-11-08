@@ -394,13 +394,13 @@ public class Box<T extends Number>
             return false;
         }
 //        if (getClass() != obj.getClass()) {
-        if (obj instanceof Box) {
+        if (!(obj instanceof Box)) {
             return false;
         }
-        final Box<?> other = (Box<?>) obj;
         if (hashCode() != obj.hashCode()) {
             return false;
         }
+        final Box<?> other = (Box<?>) obj;
         // TODO нужно реализовать правильное сравнение (9 комбинаций) всех сторон со всеми сторонами!
         if (nvl(this.width) != nvl(other.width)) {
             return false;
