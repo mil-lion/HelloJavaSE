@@ -14,6 +14,8 @@ package ru.lionsoft.javase.hello;
  */
 public class HelloApp {
     
+    public static final String HELLO  = "Hello World!";
+    
     /**
      * Главный метод для запуска приложения из командной строки
      * @param args аргументы программы из командной строки

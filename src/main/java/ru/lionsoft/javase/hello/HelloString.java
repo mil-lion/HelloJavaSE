@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 /**
- *
+ * Примеры работы со строками
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
 public class HelloString {
@@ -20,11 +20,25 @@ public class HelloString {
     public static void main(String[] args) {
         HelloString app = new HelloString();
         
+        String str1 = "Hello World!";
+        String str2 = new String("Hello World!");
+        String str3 = "Hello World!";
+        
+        System.out.println("str1 == str2 -> " + (str1 == str2));
+        System.out.println("str1 == str3 -> " + (str1 == str3));
+        System.out.println("str1 == HELLO -> " + (str1 == HelloApp.HELLO));
+        System.out.println("str1.intern() == str2.intern() -> " + (str1.intern() == str2.intern()));
+        System.out.println("str1.equals(str2) -> " + str1.equals(str2));
+        System.out.println("str1.equalsIgnoreCase(str2) -> " + str1.equalsIgnoreCase(str2.toLowerCase()));
+        System.out.println("str1.compareTo(str2) -> " + str1.compareTo(str2));
+        System.out.println("str1.compareToIgnoreCase(str2) -> " + str1.compareToIgnoreCase(str2.toLowerCase()));
+        
         int x = 123456;
         System.out.println("x = " + String.format("%09d", x));
         System.out.println("x = " + intToString1(x, 9));
         System.out.println("x = " + intToString2(x, 9));
         System.out.println("x = " + intToString3(x, 9));
+        System.out.println("x = " + intToString4(x, 9));
         
         app.testPlus();
         app.testConcat();
@@ -67,6 +81,11 @@ public class HelloString {
             sb.append((char)('0' + x % 10));
         }
         return sb.reverse().toString();
+    }
+    
+    public static  String intToString4(int x, int n) {
+        StringBuilder sb = new StringBuilder("000000000000000000000");
+        return sb.append(x).delete(0, sb.length() - n).toString();
     }
     
     private static final String TEST_STRING = 
