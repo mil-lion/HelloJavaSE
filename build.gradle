@@ -11,6 +11,9 @@ version = '1.0-SNAPSHOT'
 sourceCompatibility = '13'
 mainClassName = 'ru.lionsoft.javase.hello.HelloApp'
 
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
 ext.license = file("${rootDir}/licenseheader.txt") 
 
 repositories {
@@ -30,25 +33,28 @@ jar {
 }
 
 //tasks.withType(JavaCompile) {
+//    options.encoding = 'UTF-8'
 //    options.compilerArgs += "--enable-preview"
 //}
-//
+
 //tasks.withType(Test) {
+//    systemProperty "file.encoding", "utf-8"
 //    jvmArgs += "--enable-preview"
 //}
-//
+
 //tasks.withType(JavaExec) {
+//    systemProperty "file.encoding", "utf-8"
 //    jvmArgs += '--enable-preview'
 //}
 
 //compileJava {
 //    options.compilerArgs += ["--enable-preview"]
 //}
-//
+
 //test {
 //    jvmArgs '--enable-preview'
 //}
-//
+
 //run {
 //    jvmArgs '--enable-preview'
 //}

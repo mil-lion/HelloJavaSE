@@ -31,7 +31,6 @@ import javax.json.bind.JsonbException;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
-import javax.xml.bind.JAXBException;
 import ru.lionsoft.javase.hello.gui.PostDraw;
 import ru.lionsoft.javase.hello.gui.PreDraw;
 import ru.lionsoft.javase.hello.gui.ShapeDraw;
@@ -90,7 +89,7 @@ public class TestJsonGUI extends JComponent {
         if (shapesFile.exists()) {
             try {
                 loadShapesFromJsonFile(shapesFile);
-            } catch (FileNotFoundException | JAXBException ex) {
+            } catch (FileNotFoundException | JsonbException ex) {
                 LOG.log(Level.SEVERE, null, ex);
             }
         }
@@ -332,10 +331,10 @@ public class TestJsonGUI extends JComponent {
     /**
      * Загрузить фигуры из файла в JSON формате
      * @param file ссылка на файл
-     * @throws JAXBException ошибка при чтении файла
+     * @throws JsonbException ошибка при чтении файла
      * @throws FileNotFoundException если файл не найден
      */
-    private void loadShapesFromJsonFile(File file) throws JAXBException, FileNotFoundException {
+    private void loadShapesFromJsonFile(File file) throws JsonbException, FileNotFoundException {
         System.out.println("@@@@ load shapes from JSON file");
         // Создаем построитель JSON
         Jsonb jsonb = JsonbBuilder.create();
