@@ -8,6 +8,7 @@
  */
 package ru.lionsoft.javase.hello.thread;
 
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -30,11 +31,11 @@ public class HelloLocker {
     static class CountThread implements Runnable {
 
         private final CommonResource res;
-        private final ReentrantLock locker;
+        private final Lock locker;
 
-        CountThread(CommonResource res, ReentrantLock lock) {
+        CountThread(CommonResource res, Lock lock) {
             this.res = res;
-            locker = lock;
+            this.locker = lock;
         }
 
         @Override
@@ -59,7 +60,7 @@ public class HelloLocker {
 
     public static void main(String[] args) {
         CommonResource commonResource = new CommonResource(); // общий ресурс
-        ReentrantLock locker = new ReentrantLock(); // создаем заглушку
+        Lock locker = new ReentrantLock(); // создаем заглушку
         for (int i = 0; i < 5; i++) {
             new Thread(new CountThread(commonResource, locker), "Thread #" + i).start();
         }

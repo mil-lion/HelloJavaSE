@@ -74,7 +74,7 @@ public class HelloSemaphore {
         @Override
         public void run() {
             try {
-                while (num < 3)// пока количество приемов пищи не достигнет 3
+                while (num < 3) // пока количество приемов пищи не достигнет 3
                 {
                     // Запрашиваем у семафора разрешение на выполнение
                     sem.acquire();

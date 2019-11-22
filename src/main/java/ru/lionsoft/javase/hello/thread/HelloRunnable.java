@@ -23,7 +23,7 @@ public class HelloRunnable {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
-                System.out.println("Thread has been interrupted!");
+                System.out.printf("Thread %s has been interrupted!\n", threadName);
             }
             System.out.printf("%s finished...\n", threadName);
         }
@@ -51,7 +51,7 @@ public class HelloRunnable {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
-                    System.out.println("Thread has been interrupted!");
+                    System.out.printf("Thread %s has been interrupted!\n", threadName);
                 }
             }
             System.out.printf("%s finished...\n", threadName);
@@ -72,7 +72,7 @@ public class HelloRunnable {
                     Thread.sleep(100);
                 }
             } catch (InterruptedException ex) {
-                System.out.println("Thread has been interrupted!");
+                System.out.printf("Thread %s has been interrupted!\n", threadName);
             }
             System.out.printf("%s finished...\n", threadName);
         }

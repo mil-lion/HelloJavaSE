@@ -26,7 +26,7 @@ public class HelloExchanger {
 
         public PutThread(Exchanger<String> ex) {
             this.exchanger = ex;
-            message = "Hello Java!";
+            message = "Hello World!";
         }
 
         @Override
@@ -51,7 +51,7 @@ public class HelloExchanger {
 
         public GetThread(Exchanger<String> ex) {
             this.exchanger = ex;
-            message = "Hello World!";
+            message = "Java Rulez!";
         }
 
         @Override
@@ -68,8 +68,8 @@ public class HelloExchanger {
 
     public static void main(String[] args) {
         Exchanger<String> exchanger = new Exchanger<>(); // обменник
-        new Thread(new PutThread(exchanger)).start();
-        new Thread(new GetThread(exchanger)).start();
+        new Thread(new PutThread(exchanger), "PutThread").start();
+        new Thread(new GetThread(exchanger), "GetThread").start();
         
     }
 }

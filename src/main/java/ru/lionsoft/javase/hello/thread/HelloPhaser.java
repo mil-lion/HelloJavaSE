@@ -12,7 +12,7 @@ import java.util.Random;
 import java.util.concurrent.Phaser;
 
 /**
- * Пример синхронизации (фазирования) выполнения этапов в потоках
+ * Пример синхронизации (фазирования) выполнения этапов в потоках (JDK7+)
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
 public class HelloPhaser {

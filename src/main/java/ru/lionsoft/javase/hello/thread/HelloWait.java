@@ -98,7 +98,7 @@ public class HelloWait {
         Store store = new Store(); // общий ресурс - склад
         Producer producer = new Producer(store); // производитель
         Consumer consumer = new Consumer(store); // потребитель
-        new Thread(producer, "Producer").start();
-        new Thread(consumer, "Consumer").start();
+        new Thread(producer, "ProducerThread").start();
+        new Thread(consumer, "ConsumerThread").start();
     }
 }

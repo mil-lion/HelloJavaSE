@@ -9,6 +9,7 @@
 package ru.lionsoft.javase.hello.thread;
 
 import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -22,7 +23,7 @@ public class HelloCondition {
 
         private int product = 0;
         
-        private final ReentrantLock locker;
+        private final Lock locker;
         private final Condition condition;
 
         public Store() {
@@ -112,7 +113,7 @@ public class HelloCondition {
         Store store = new Store(); // общий ресурс - Склад
         Producer producer = new Producer(store); // поставщик товара
         Consumer consumer = new Consumer(store); // потребитель товара
-        new Thread(producer).start();
-        new Thread(consumer).start();
+        new Thread(producer, "ProducerThread").start();
+        new Thread(consumer, "ConsumerThread").start();
     }
 }
