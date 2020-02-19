@@ -9,35 +9,47 @@
 package ru.lionsoft.javase.hello;
 
 import java.awt.Color;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.testng.Assert.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
- * Тестирование класса Box с помощью фреймворка JUnit
+ * Тестирование класса Box с помощью фреймворка TestNG
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
-public class BoxTest {
+public class BoxTestNG {
     
-    public BoxTest() {
+    public BoxTestNG() {
     }
     
+    /**
+     * Метод выполныется перед созданием экземпляра класса
+     */
     @BeforeClass
     public static void setUpClass() {
     }
     
+    /**
+     * Метод выполныется после уничтожения экземпляра класса
+     */
     @AfterClass
     public static void tearDownClass() {
     }
     
-    @Before
+    /**
+     * Метод выполныется перед каждым запуском метода помеченного @Test
+     */
+    @BeforeMethod
     public void setUp() {
     }
     
-    @After
+    /**
+     * Метод выполныется после каждого выполнениия метода помеченного @Test
+     */
+    @AfterMethod
     public void tearDown() {
     }
 
