@@ -21,4 +21,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface PostDraw {
     
+    int order() default 1;
 }

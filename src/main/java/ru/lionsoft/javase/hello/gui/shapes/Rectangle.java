@@ -122,7 +122,7 @@ public class Rectangle extends AbstractShape implements ShapeParameter {
     @JsonbTransient
     @Override
     public ShapeType getShapeType() {
-        return width == height ? ShapeType.SQUARE : ShapeType.RECTANGLE;
+        return width == height ? ShapeType.Square : ShapeType.Rectangle;
     }
 
     // По умолчанию: фигура не закрашенная!
@@ -149,13 +149,13 @@ public class Rectangle extends AbstractShape implements ShapeParameter {
     // ************* Callback Methods **************
 
     // Аннотированный метод, который будет вызываться перед отрисовкой фигуры
-    @PreDraw
+    @PreDraw(order = 2)
     public void beforeDraw1(Graphics g) {
         System.out.println("@@@@ call " + getClass().getSimpleName() + ".beforeDraw1()!!!");
     }
 
     // Аннотированный метод, который будет вызываться перед отрисовкой фигуры
-    @PreDraw
+    @PreDraw(order = 1)
     public void beforeDraw2(Graphics g) {
         System.out.println("@@@@ call " + getClass().getSimpleName() + ".beforeDraw2()!!!");
     }

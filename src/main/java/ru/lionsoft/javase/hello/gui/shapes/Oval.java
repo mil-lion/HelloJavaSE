@@ -121,7 +121,7 @@ public class Oval extends AbstractShape implements Shape, ShapeDrawCallback {
     @JsonbTransient
     @Override
     public ShapeType getShapeType() {
-        return width == height ? ShapeType.CIRCLE : ShapeType.OVAL;
+        return width == height ? ShapeType.Circle : ShapeType.Oval;
     }
 
     // По умолчанию: фигура не закрашенная!

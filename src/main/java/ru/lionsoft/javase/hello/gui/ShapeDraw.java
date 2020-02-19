@@ -46,7 +46,6 @@ public interface ShapeDraw {
 
     /**
      * Получить порядок отрисовки фигуры на экране
-     *
      * @return значение порядка
      */
     default int getOrder() {

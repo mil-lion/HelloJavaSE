@@ -58,19 +58,19 @@ public interface ShapeParameter {
      */
     enum ShapeType {
         /** Неизвестно */
-        UNKNOWN, 
+        Unknown, 
         /** Линия */
-        LINE, 
+        Line, 
         /** Прямоугольник */
-        RECTANGLE, 
+        Rectangle, 
         /** Квадрат */
-        SQUARE, 
+        Square, 
         /** Овал */
-        OVAL, 
+        Oval, 
         /** Круг */
-        CIRCLE, 
+        Circle, 
         /** Текст */
-        TEXT}
+        Text}
     
     /**
      * Метод получения типа фигуры (перечисление {@code ShapeType})

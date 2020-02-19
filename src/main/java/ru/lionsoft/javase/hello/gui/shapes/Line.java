@@ -117,6 +117,4 @@ public class Line extends AbstractShape {
         return Math.hypot((x2 - x), (y2 - y));
     }
 
-    // ************* Getters & Setters **************
-    
 }

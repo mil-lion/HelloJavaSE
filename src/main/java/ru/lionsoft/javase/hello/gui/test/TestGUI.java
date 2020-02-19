@@ -10,15 +10,14 @@ package ru.lionsoft.javase.hello.gui.test;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Set;
+import java.util.stream.Stream;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -36,6 +35,7 @@ import ru.lionsoft.javase.hello.gui.shapes.Line;
 import ru.lionsoft.javase.hello.gui.shapes.Oval;
 import ru.lionsoft.javase.hello.gui.shapes.Rectangle;
 import ru.lionsoft.javase.hello.gui.shapes.Text;
+import ru.lionsoft.javase.hello.gui.util.AnnotatedMethodCache;
 
 /**
  * Пример создания графического окна и отрисовки простых фигур
@@ -43,17 +43,11 @@ import ru.lionsoft.javase.hello.gui.shapes.Text;
  */
 public class TestGUI extends JComponent {
     
-    /**
-     * Журнал для класса
-     */
-    private static final Logger LOG = Logger.getLogger(TestGUI.class.getName());
-
     // TODO: заменить на колекцию!
     private final ShapeDraw[] shapes = new ShapeDraw[14];
     
-    // Кэш для списка аннотированных методов классов
-    private final Map<Class, List<Method>> preMethods = new HashMap<>();
-    private final Map<Class, List<Method>> postMethods = new HashMap<>();
+    // Кэш для списка аннотированных методов классов фигур
+    private final AnnotatedMethodCache cache = new AnnotatedMethodCache();
 
     /**
      * Конструктор по умолчанию для инициализации фигур
@@ -105,13 +99,13 @@ public class TestGUI extends JComponent {
         shapes[4] = new Line(Color.MAGENTA, 10, 10, 50, 20);
         shapes[5] = new Rectangle(Color.BLUE, 200, 200, 150, 80);
         shapes[6] = new FillRectangle(Color.CYAN, 210, 210, 130, 60);
-        shapes[7] = new Oval(Color.DARK_GRAY, 450, 100, 150, 120);
-        shapes[8] = new FillOval(Color.PINK, 450, 100, 130, 100);
+        shapes[7] = new Oval(Color.DARK_GRAY, 450, 300, 150, 120);
+        shapes[8] = new FillOval(Color.PINK, 450, 300, 130, 100);
         shapes[9] = new Text(Color.BLUE, 410, 110, "Виват Цезарь!");
         shapes[10] = (new Text(Color.DARK_GRAY, 420, 130, "Виват Император!"));
-        shapes[11] = new Text(new Color(128, 255, 64), 30, 150, "Привет Мир!");
-        shapes[12] = new Circle(new Color(64, 128, 255), 130, 70, 40);
-        shapes[13] = new FillCircle(new Color(128, 255, 64), 130, 70, 30);
+        shapes[11] = new Text(new Color(128, 255, 64), 430, 150, "Привет Мир!");
+        shapes[12] = new Circle(new Color(64, 128, 255), 130, 270, 40);
+        shapes[13] = new FillCircle(new Color(128, 255, 64), 130, 270, 30);
         
         // Сортируем фигуры по порядку отрисовки
         Arrays.sort(shapes, (s1, s2) -> Integer.compare(s1.getOrder(), s2.getOrder()));
@@ -154,7 +148,7 @@ public class TestGUI extends JComponent {
             
             // **** Подготовка к рисованию ****
             // Вызываем аннотированные @PostDraw методы
-            callAnnotationMethodsForShape(preMethods, shape, g);
+            cache.invokeAnnodatedMethods(shape, PreDraw.class, g);
             // before JDK8 - надо проверять реализацию интерфейса
             if (shape instanceof ShapeDrawCallback) {
                 System.out.println("@@@@ call ShapeDrawCallback.preDraw()!");
@@ -176,7 +170,7 @@ public class TestGUI extends JComponent {
                 ((ShapeDrawCallback)shape).postDraw(g);
             }
             // Вызываем аннотированные @PostDraw методы
-            callAnnotationMethodsForShape(postMethods, shape, g);
+            cache.invokeAnnodatedMethods(shape, PostDraw.class, g);
         }
     }
     
@@ -184,82 +178,43 @@ public class TestGUI extends JComponent {
      * Метод анализирует классы всех фигур на аннотацию методов @PreDraw и @PostDraw 
      */
     private void analyzeAnnotationForShapes() {
-        for (Object obj : shapes) {
-            // Проверка на существование объекта (для коллекции нет необходимости проверять)
-            if (obj != null) {
-                final Class objClass = obj.getClass();
-                // Если в словаре есть описание класса, то анализировать не нужно повторно
-                if (preMethods.containsKey(objClass) || postMethods.containsKey(objClass))
-                    continue;
+        System.out.println("@@@@ analyze annotation methods");
+//        Set<Class> shapeClasses = new HashSet<>();
+//        for (ShapeDraw shape : shapes) {
+//            if (shapeClasses.add(shape.getClass())) {
+//                cache.add(shape.getClass(), PreDraw.class, PostDraw.class);
+//            }
+//        }
+        Stream.of(shapes)
+                .filter((shape) -> shape != null) // skip null
+                .map((shape) -> shape.getClass()) // ShapeDraw -> Class
+                .distinct()                       // skip duplicate class
+                .forEach((clazz) -> cache.add(clazz, PreDraw.class, PostDraw.class));
 
-                // Перебираем все публичные методы объекта
-                for (Method method : objClass.getMethods()) {
-                    // @PreDraw
-                    PreDraw preDraw = method.getAnnotation(PreDraw.class);
-                    if (preDraw != null) {
-                        // Метод аннотирован @PreDraw
-                        addMethodToMap(preMethods, objClass, method);
-                    }
-                    // @PostDraw
-                    PostDraw postDraw = method.getAnnotation(PostDraw.class);
-                    if (postDraw != null) {
-                        // Метод аннотирован @PostDraw
-                        addMethodToMap(postMethods, objClass, method);
-                    }
-                }
+        // Сортируем методы по аттрибуту 'order' аннотаций PreDraw и PostDraw
+        cache.sortAnnotatedMethods(PreDraw.class, new Comparator<Method>() {
+            @Override
+            public int compare(Method m1, Method m2) {
+                return m1.getAnnotation(PreDraw.class).order() - m2.getAnnotation(PreDraw.class).order();
             }
-        }
-    }
-
-    /**
-     * Метод добавления метода в словарь
-     * @param map словарь ассоциаций списка методов с классом
-     * @param key ссылка на класс (ключ словаря)
-     * @param value ссылка на метод (значение для добавления в список словаря)
-     */
-    private void addMethodToMap(Map<Class, List<Method>> map, Class key, Method value) {
-        List<Method> list = map.get(key);
-        if (list == null) {
-            // Не было еще ассоциации - создаем новый список методов
-            list = new ArrayList<>();
-            map.put(key, list);
-        }
-        list.add(value);
-    }
-
-    /**
-     * Метод вызова callback методов для фигуры (объекта)
-     * @param map ссылка на словарь списка анотированных методов для классов
-     * @param obj ссылка на фигуру
-     * @param g графический контекст для передачи в метод в качестве параметра
-     */
-    private void callAnnotationMethodsForShape(Map<Class, List<Method>> map, Object obj, Graphics g) {
-        // Получаем список анотированных методов для класса
-        List<Method> methods = map.get(obj.getClass());
-        // Если нет анотированных методов - выход
-        if (methods == null) return; 
-        // Перебираем все анотированные методы
-        for (Method method : methods) {
-            try {
-                // Вызываем анотированный метод для фигуры (объекта) и передаем параметр на графический контекст
-                System.out.println("invoke Annotation Method: " + method.toGenericString());
-                method.invoke(obj, g);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                LOG.log(Level.SEVERE, "Invoke Method", ex);
-            }
-        } 
+        });
+        cache.sortAnnotatedMethods(PostDraw.class,
+                (m1, m2) -> m1.getAnnotation(PostDraw.class).order() - m2.getAnnotation(PostDraw.class).order());
     }
 
     /**
      * Метод вычисления статистики для фигур
      */
     private void calculateStatistics() {
+        System.out.println("@@@@ analize shapes and calculate statistics");
         // Опредяем агрегаторы и счетчики
         double sumSquare = 0; // сумма площади всех фигур (необходимое кол-во краски для отрисовки фигур)
         int count = 0; // кол-во фигур
         int lines = 0; // кол-во линий
         int rects = 0; // кол-во прямоугольников
         int ovals = 0; // кол-во овалов
+        int texts = 0; // кол-во тесктовых строк
+        int fills = 0; // кол-во закрашенных фигур
         Map<Color, Integer> colors = new HashMap<>(); // счетчики для каждого цвета
         
         // Перебираем все фигуры
@@ -269,41 +224,58 @@ public class TestGUI extends JComponent {
             if (shape == null) continue;
              
             count++;
+            
             if (shape instanceof Line) {
                 Line line = (Line)shape;
                 System.out.println("Анализируем " + line.getClass().getSimpleName());
                 lines++;
                 sumSquare += line.getLineSize() * 1;
+                
                 // Color
                 Color color = line.getColor();
                 Integer cnt = colors.get(color);
                 colors.put(color, (cnt == null ? 1 : cnt++));
             }
+            
             if (shape instanceof ShapeParameter) {
                 ShapeParameter param = (ShapeParameter) shape;
                 System.out.println("Анализируем " + param.getType());
+                
                 // Square
                 sumSquare += param.getPerimeter() * 1;
                 if (param.isFill()) {
+                    fills++;
                     // Фигура закрашена то добавляем площадь
                     sumSquare += param.getSquare();
                 }
+
                 // Type
                 switch (param.getShapeType()) {
-                    case LINE:
+                    case Line:
                         lines++;
                         break;
                         
-                    case RECTANGLE:
-                    case SQUARE:
+                    case Rectangle:
+                    case Square:
                         rects++;
                         break;
                         
-                    case OVAL:
-                    case CIRCLE:
+                    case Oval:
+                    case Circle:
                         ovals++;
                         break;
+                    case Text:
+                        texts++;
+                        break;
                 }
+                // JDK12+ (--enable-preview)
+//                switch (param.getShapeType()) {
+//                    case Line              -> lines++;
+//                    case Rectangle, Square -> rects++;
+//                    case Oval, Circle      -> ovals++;
+//                    case Text              -> texts++;
+//                }
+
                 // Color
                 Color color = param.getColor();
                 Integer cnt = colors.get(color);
@@ -316,6 +288,9 @@ public class TestGUI extends JComponent {
         System.out.println("lines = " + lines);
         System.out.println("rects = " + rects);
         System.out.println("ovals = " + ovals);
+        System.out.println("texts = " + texts);
+        System.out.println("fills = " + fills);
         System.out.println("colors = " + colors);
     }
+
 }
