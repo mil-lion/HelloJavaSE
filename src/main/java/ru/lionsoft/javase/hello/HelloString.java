@@ -45,7 +45,7 @@ public class HelloString {
         app.testStringBuilder();
         app.testStringBuffer();
         
-        String text = "Привет строка из Java Standard Edition!";
+        String text = "\tПривет строка\n\rиз Java Standard Edition!\n";
         app.printByWord1(text);
         app.printByWord2(text);
         app.printByWord3(text);
