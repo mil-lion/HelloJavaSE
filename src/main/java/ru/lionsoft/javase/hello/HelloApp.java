@@ -25,12 +25,13 @@ public class HelloApp {
         HelloApp app = new HelloApp();
         
         app.условныеКонструкции();
-        
+        app.циклы();
+        app.testVarArgs();
         app.testBox();
-        
+
         System.out.println("-8 = " + NumberUtils.intToBinaryString(-8));
         System.out.println("-8 >>> 2 = " + (-8>>>2) + " = " + NumberUtils.intToBinaryString(-8>>>2));
-        
+
         int i = 123_456_789;
         System.out.println("i = " + String.format("%08x", i));
         i = Integer.parseInt("075bcd15", 16);
@@ -38,7 +39,7 @@ public class HelloApp {
         System.out.println("0x075bcd15 -> " + "0x075bcd15".substring(2));
         i = Integer.parseUnsignedInt("0xff80ff40".substring(2), 16);
         System.out.println("i = " + i);
-        
+
         // digital
         System.out.println("\nDigital: 123456");
         app.printIntegerValue(123456);
@@ -51,10 +52,63 @@ public class HelloApp {
         // binary
         System.out.println("\nBinary: 0b1011001");
         app.printIntegerValue(0b1011001);
-        
-        app.vaTest(10);
-        app.vaTest(1, 2, 3);
-        app.vaTest();
+
+    }
+
+    private void циклы() {
+        System.out.println("#### конструкция while");
+        int i = 0;
+        while (i < 5) System.out.println(i++);
+
+        i = 5;
+        while (i > 0) {
+            System.out.println(i);
+            i--;
+        }
+
+        System.out.println("#### конструкция do-while");
+        i = 0;
+        do {
+            System.out.println(i++);
+        } while (i < 5);
+
+        System.out.println("#### конструкция for");
+        for (i = 0; i < 5; i++)
+            System.out.println(i);
+
+        for (int x = 0, y = 5; x < 5; x++, y -= 2)
+            System.out.println("x = " + x + ", y = " + y);
+
+        System.out.println("#### конструкция for-each");
+        int[] array = { 1, 2, 3, 4, 5 };
+        for (int x : array) {
+            System.out.println(x);
+        }
+
+        System.out.println("#### конструкция break-continue");
+        yearLoop: for (int year = 2010; year <= 2021; year++) {
+            monthLoop: for (int month = 1; month <= 12; month++) {
+                System.out.println(year + "." + month);
+//                if (year < 2020) break;
+                if (year < 2020) continue yearLoop;
+                if (year == 2020 && month == 3) break yearLoop;
+            }
+        }
+    }
+
+    /**
+     * Метод для тестирования методов с переменным кол-вом аргументов
+     */
+    private void testVarArgs() {
+        System.out.println("#### test VarArgs:");
+        vaTest(10);
+        vaTest(1, 2, 3);
+        vaTest(true, false, true);
+//        app.vaTest(); // Ошибка: vaTest(int...) или vaTest(boolean...)
+//        app.vaTest(null); // Ошибка: vaTest(int...) или vaTest(boolean...)
+        vaTest("Test", 4, 3, 6);
+        vaTest("Test2");
+        vaTest(null, null);
     }
 
     /**
@@ -84,9 +138,9 @@ public class HelloApp {
      */
     public void printBox(String name, Box box) {
         System.out.println(name + " = " + box);
-        System.out.println(name + ".perimeter     = " + box.getPerimeter());
-        System.out.println(name + ".squareSurface = " + box.getSquareSurface());
-        System.out.println(name + ".volume        = " + box.getVolume());
+        System.out.println(name + ".perimeter     = " + box.getPerimeter() + " m");
+        System.out.println(name + ".squareSurface = " + box.getSquareSurface() + " m\u00b2");
+        System.out.println(name + ".volume        = " + box.getVolume() + " m\u00b3");
     }
 
     /**
@@ -164,7 +218,7 @@ public class HelloApp {
         }
         System.out.println(output);
         
-        // for JDK12 (preview)
+        // for JDK12+ (preview)
 //        System.out.println("#### Конструкция switch с несколькими case (JDK12):");
 //        num = 2;
 //        output = switch (num) {
@@ -223,4 +277,25 @@ public class HelloApp {
             System.out.println(x);
         }
     }
+
+    public void vaTest(boolean... v) {
+        System.out.println("ru.lionsoft.javase.hello.HelloApp.vaTest()");
+        System.out.println("Number of args: " + v.length);
+        System.out.println("Contents:");
+        for (boolean x : v) {
+            System.out.println(x);
+        }
+    }
+
+    public void vaTest(String msg, int... v) {
+        System.out.println("ru.lionsoft.javase.hello.HelloApp.vaTest()");
+        System.out.println("msg: " + msg);
+        System.out.println("Number of args: " + v.length);
+        System.out.print("Contents: ");
+        for (int x : v) {
+            System.out.print(x + " ");
+        }
+        System.out.println();
+    }
+
 }
