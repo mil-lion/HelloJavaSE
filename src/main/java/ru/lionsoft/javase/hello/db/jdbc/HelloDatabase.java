@@ -24,22 +24,22 @@ public class HelloDatabase {
     private static final Logger LOG = Logger.getLogger(HelloDatabase.class.getName());
     
     // Apache Derby
-    private static final String DERBY_JDBC_DRIVER_CLASS = "org.apache.derby.jdbc.ClientDriver";
-    private static final String DERBY_JDBC_URL = "jdbc:derby://localhost:1527/sample";
-    private static final String DERBY_JDBC_USERNAME = "app";
-    private static final String DERBY_JDBC_PASSWORD = "app";
+    static final String DERBY_JDBC_DRIVER_CLASS = "org.apache.derby.jdbc.ClientDriver";
+    static final String DERBY_JDBC_URL = "jdbc:derby://localhost:1527/sample";
+    static final String DERBY_JDBC_USERNAME = "app";
+    static final String DERBY_JDBC_PASSWORD = "app";
     // Oracle
-    private static final String ORACLE_JDBC_DRIVER_CLASS = "oracle.jdbc.driver.OracleDriver";
-    private static final String ORACLE_JDBC_URL_THIN = "jdbc:oracle:thin:@localhost:1521:orcl";
-    private static final String ORACLE_JDBC_URL_OCI  = "jdbc:oracle:oci:@orcl";
-    private static final String ORACLE_JDBC_URL_KPRB = "jdbc:oracle:kprb:";
-    private static final String ORACLE_JDBC_USERNAME = "hr";
-    private static final String ORACLE_JDBC_PASSWORD = "hr";
+    static final String ORACLE_JDBC_DRIVER_CLASS = "oracle.jdbc.driver.OracleDriver";
+    static final String ORACLE_JDBC_URL_THIN = "jdbc:oracle:thin:@localhost:1521:orcl";
+    static final String ORACLE_JDBC_URL_OCI  = "jdbc:oracle:oci:@orcl";
+    static final String ORACLE_JDBC_URL_KPRB = "jdbc:oracle:kprb:";
+    static final String ORACLE_JDBC_USERNAME = "hr";
+    static final String ORACLE_JDBC_PASSWORD = "hr";
     // PostgreSQL
-    private static final String PGSQL_JDBC_DRIVER_CLASS = "org.postgresql.Driver";
-    private static final String PGSQL_JDBC_URL = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String PGSQL_JDBC_USERNAME = "postgres";
-    private static final String PGSQL_JDBC_PASSWORD = "postgres";
+    static final String PGSQL_JDBC_DRIVER_CLASS = "org.postgresql.Driver";
+    static final String PGSQL_JDBC_URL = "jdbc:postgresql://localhost:5432/postgres";
+    static final String PGSQL_JDBC_USERNAME = "postgres";
+    static final String PGSQL_JDBC_PASSWORD = "postgres";
     
     public static void main(String[] args) {
         HelloDatabase app = new HelloDatabase();
