@@ -2,7 +2,6 @@ plugins {
     id 'application'
     id 'java'
     id 'eclipse'
-    //    id 'jacoco'
 }
 
 description = 'Примеры классов для изучения основ Java SE'
@@ -59,6 +58,14 @@ jar {
 //    jvmArgs '--enable-preview'
 //}
 
+//tasks.withType(JavaCompile).each {
+//    it.options.compilerArgs.add('--enable-preview')
+//}
+
+//test {
+//    jvmArgs(['--enable-preview'])
+//}
+
 dependencies {
     /* ########### JAXB ############ */
 
@@ -92,12 +99,23 @@ dependencies {
     // https://mvnrepository.com/artifact/org.eclipse/yasson
     compile group: 'org.eclipse', name: 'yasson', version: '1.0.5'
     
-    /* ########### JPA ############ */
+    /* ########### JDBC Driver ############ */
     
     // Apache Derby JDBC Driver
     // https://mvnrepository.com/artifact/org.apache.derby/derbyclient
     compile group: 'org.apache.derby', name: 'derbyclient', version: '10.14.2.0'
 
+    // PostgreSQL JDBC Driver
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.10'
+
+    // Oracle JDBC Driver
+    // https://mvnrepository.com/artifact/oracle/oracle-jdbc
+//    compile group: 'oracle', name: 'oracle-jdbc', version: '12.1.0.2'
+
+
+    /* ########### JPA ############ */
+ 
     // JPA API
     // https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
     compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
@@ -107,6 +125,12 @@ dependencies {
     compile group: 'org.eclipse.persistence', name: 'org.eclipse.persistence.jpa', version: '2.7.5'
 
     
-    // Test
+    /* ############ Test ############## */
+    // JUnit
     testCompile 'junit:junit:4.12'
+    
+    // TestNG
+    // https://mvnrepository.com/artifact/org.testng/testng
+    testCompile group: 'org.testng', name: 'testng', version: '7.0.0'
+
 }
