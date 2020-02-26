@@ -12,8 +12,16 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ru.lionsoft.javase.hello.db.jdbc.entities.Customer;
+import ru.lionsoft.javase.hello.db.jdbc.entities.DiscountCode;
+import ru.lionsoft.javase.hello.db.jdbc.entities.MicroMarket;
+import ru.lionsoft.javase.hello.db.jdbc.facades.CustomerFacade;
+import ru.lionsoft.javase.hello.db.jdbc.facades.DiscountCodeFacade;
+import ru.lionsoft.javase.hello.db.jdbc.facades.MicroMarketFacade;
 
 /**
  * Пример работы с СУБД с использованием JDBC
@@ -48,6 +56,8 @@ public class HelloDatabase {
         try (Connection connection = 
                 app.connectToDatabase(DERBY_DRIVER_CLASS, DERBY_URL, DERBY_USERNAME, DERBY_PASSWORD);) {
             app.printConnectionInfo(connection);
+            
+            app.testFacades(connection);
         } catch (ClassNotFoundException | SQLException ex) {
             LOG.log(Level.SEVERE, "Apache Derby error", ex);
         }
@@ -104,5 +114,64 @@ public class HelloDatabase {
         System.out.println("  JDBC Driver: " + dbMetaData.getDriverName() 
                 + " v." + dbMetaData.getDriverVersion());
     }
+
+    /**
+     * Работа с СУБД через фасады и фабрику сущностей
+     * @param connection соедиение с СУБД
+     * @throws SQLException ошибка SQL
+     */
+    private void testFacades(Connection connection) throws SQLException {
+        // Facades
+        CustomerFacade customerFacade = new CustomerFacade(connection);
+        DiscountCodeFacade discountCodeFacade = new DiscountCodeFacade(connection);
+        MicroMarketFacade microMarketFacade = new MicroMarketFacade(connection);
+        
+        // select Customer
+        Customer customer = customerFacade.find(1);
+        System.out.println("customer: " + customer);
+        
+        List<Customer> customers = customerFacade.findByName("XXX%");
+        System.out.println("Customers:");
+        customers.forEach(System.out::println);
+        
+        System.out.println("customer.count: " + customerFacade.count());
+        
+        // select DiscountCode
+        DiscountCode discountCode = discountCodeFacade.find("H");
+        System.out.println("discountCode: " + discountCode);
+
+        System.out.println("discountCode.count: " + discountCodeFacade.count());
+        
+        // select MicroMarket
+        MicroMarket microMarket = microMarketFacade.find("94401");
+        System.out.println("microMarket: " + microMarket);
+
+        System.out.println("microMarket.count: " + microMarketFacade.count());
+        
+        // DML
+        Random r = new Random();
+        
+        // insert
+        Customer newCustomer = new Customer(generateId());
+        newCustomer.setDiscountCode("H");
+        newCustomer.setZip("94401");
+        newCustomer.setName("XXX" + r.nextInt(9));
+        
+        customerFacade.insert(newCustomer);
+        connection.commit();
+        
+        // update
+        newCustomer.setEmail(newCustomer.getName().toLowerCase() + "@mail.ru");
+        
+        customerFacade.update(newCustomer);
+        connection.commit();
+        
+        // delete
+        customerFacade.delete(newCustomer);
+        connection.commit();
+    }
     
+    private int generateId() {
+        return (int)System.nanoTime() & 0x7fffffff;
+    }
 }
