@@ -41,6 +41,6 @@ public interface ICistomer {
     String getFax();
     void setFax(String fax);
     
-    Integer getCreadirLimit();
+    Integer getCreaditLimit();
     void setCreditLimit(Integer creditLimit);
 }

@@ -16,12 +16,17 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Завод (singletone) по созданию сущностей для базы данных
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
 public class EntityFactory {
+
+    /** Журнал */
+    private static final Logger LOG = Logger.getLogger(EntityFactory.class.getName());
     
     private EntityFactory() {
     }
@@ -66,7 +71,7 @@ public class EntityFactory {
                     columns.put(metaData.getColumnName(i).toUpperCase(), rs.getObject(i));
                 }
             } catch (SQLException ex) {
-                System.err.println("Error: " + ex.getMessage());
+                LOG.log(Level.SEVERE, null, ex);
             }
         }
 
@@ -79,24 +84,27 @@ public class EntityFactory {
             if (methodName.equals("toString")) {
                 return columns.toString();
             } else if (methodName.startsWith("get")) {
-                String columnName = convertColumnName(methodName);
+                String columnName = propertyToColumnName(methodName);
                 return columns.get(columnName);
             } else if (methodName.startsWith("set")) {
-                String columnName = convertColumnName(methodName);
+                String columnName = propertyToColumnName(methodName);
                 columns.put(columnName, args[0]);
             }
             return null;
         }
         
-        private String convertColumnName(String name) {
-            StringBuilder sb = new StringBuilder(name);
-            sb.delete(0, 3);
+        private String propertyToColumnName(String propertyName) {
+            StringBuilder sb = new StringBuilder(propertyName);
+            sb.delete(0, 3); // delete set/get
             for (int i = 1; i < sb.length(); i++) {
-                if (Character.isUpperCase(sb.charAt(i))) {
+                char c = sb.charAt(i);
+                if (Character.isUpperCase(c)) {
                     sb.insert(i++, '_');
+                } else {
+                    sb.setCharAt(i, c);
                 }
             }
-            return sb.toString().toUpperCase();
+            return sb.toString();
         }
         
     }
