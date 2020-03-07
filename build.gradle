@@ -124,6 +124,16 @@ dependencies {
     // https://mvnrepository.com/artifact/org.eclipse.persistence/org.eclipse.persistence.jpa
     compile group: 'org.eclipse.persistence', name: 'org.eclipse.persistence.jpa', version: '2.7.5'
 
+
+    // ############ Benchmark ################
+    
+    // JMH
+    // https://mvnrepository.com/artifact/org.openjdk.jmh/jmh-core
+    compile group: 'org.openjdk.jmh', name: 'jmh-core', version: '1.23'
+
+    // https://mvnrepository.com/artifact/org.openjdk.jmh/jmh-generator-annprocess
+    compile group: 'org.openjdk.jmh', name: 'jmh-generator-annprocess', version: '1.23'
+
     
     /* ############ Test ############## */
     // JUnit

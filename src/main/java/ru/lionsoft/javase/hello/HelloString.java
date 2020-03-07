@@ -10,12 +10,28 @@ package ru.lionsoft.javase.hello;
 
 import java.util.Arrays;
 import java.util.StringTokenizer;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 /**
  * Примеры работы со строками
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
+//@BenchmarkMode({Mode.Throughput, Mode.AverageTime})
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 public class HelloString {
+
+    private static final Logger LOG = Logger.getLogger(HelloString.class.getName());
     
     public static void main(String[] args) {
         HelloString app = new HelloString();
@@ -40,10 +56,11 @@ public class HelloString {
         System.out.println("x = " + intToString3(x, 9));
         System.out.println("x = " + intToString4(x, 9));
         
-        app.testPlus();
-        app.testConcat();
-        app.testStringBuilder();
-        app.testStringBuffer();
+//        app.testPlus();
+//        app.testConcat();
+//        app.testStringBuilder();
+//        app.testStringBuffer();
+        app.runBenchmark();
         
         String text = "\tПривет строка\n\rиз Java Standard Edition!\n";
         app.printByWord1(text);
@@ -54,7 +71,7 @@ public class HelloString {
     }
     
     /**
-     * Функция преобразования числа к строке с ведущими нулями
+     * Функция преобразования числа к строке с ведущими нулями (Array)
      * @param x число для преобразования
      * @param n количество знаков числа
      * @return строковое представление числа с ведущими нулями
@@ -67,6 +84,12 @@ public class HelloString {
         return new String(buffer);
     }
 
+    /**
+     * Функция преобразования числа к строке с ведущими нулями (String.getChars)
+     * @param x число для преобразования
+     * @param n количество знаков числа
+     * @return строковое представление числа с ведущими нулями
+     */
     public static  String intToString2(int x, int n) {
         char[] buffer = new char[n];
         Arrays.fill(buffer, '0');
@@ -75,6 +98,12 @@ public class HelloString {
         return new String(buffer);
     }
     
+    /**
+     * Функция преобразования числа к строке с ведущими нулями (StringBuilder)
+     * @param x число для преобразования
+     * @param n количество знаков числа
+     * @return строковое представление числа с ведущими нулями
+     */
     public static  String intToString3(int x, int n) {
         StringBuilder sb = new StringBuilder(n);
         for (int i = 0; i < n; i++, x /= 10) {
@@ -83,6 +112,12 @@ public class HelloString {
         return sb.reverse().toString();
     }
     
+    /**
+     * Функция преобразования числа к строке с ведущими нулями (SubString)
+     * @param x число для преобразования
+     * @param n количество знаков числа
+     * @return строковое представление числа с ведущими нулями
+     */
     public static  String intToString4(int x, int n) {
         StringBuilder sb = new StringBuilder("000000000000000000000");
         return sb.append(x).delete(0, sb.length() - n).toString();
@@ -97,6 +132,9 @@ public class HelloString {
     private static final int TEST_COUNT = 1000;
     private static final long MEGA = 1024 * 1024;
     
+    /**
+     * Печать информации о памяти JVM
+     */
     private void printMemoryInfo() {
         Runtime rt = Runtime.getRuntime();
         long maxMemory = rt.maxMemory() / MEGA;
@@ -106,6 +144,10 @@ public class HelloString {
         System.out.printf("memoty info: %dM:%dM:%dM:%dM\n", maxMemory, totalMemory, usageMemory, freeMemory);
     }
     
+    /**
+     * Тест сложения строк
+     */
+    @Benchmark
     public void testPlus() {
         System.out.println("### Test Plus");
         printMemoryInfo();
@@ -120,6 +162,10 @@ public class HelloString {
         printMemoryInfo();
     }
 
+    /**
+     * Тест функции String.concat
+     */
+    @Benchmark
     public void testConcat() {
         System.out.println("### Test Concat");
         printMemoryInfo();
@@ -134,6 +180,10 @@ public class HelloString {
         printMemoryInfo();
     }
 
+    /**
+     * Тест использования StringBuilder
+     */
+    @Benchmark
     public void testStringBuilder() {
         System.out.println("### Test StringBuilder");
         printMemoryInfo();
@@ -149,6 +199,10 @@ public class HelloString {
         printMemoryInfo();
     }
 
+    /**
+     * Тест использования StringBuilder
+     */
+    @Benchmark
     public void testStringBuffer() {
         System.out.println("### Test StringBuffer");
         printMemoryInfo();
@@ -164,8 +218,27 @@ public class HelloString {
         printMemoryInfo();
     }
 
+    /**
+     * Запуск замера производительности методов (JMH)
+     */
+    private void runBenchmark() {
+        Options options = new OptionsBuilder()
+                .include(HelloString.class.getSimpleName())
+                .forks(1)
+                .build();
+        try {
+            new Runner(options).run();
+        } catch (RunnerException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Печать слов из текста на каждой строке (String.split)
+     * @param text исходный текст
+     */
     public void printByWord1(String text) {
-        System.out.println("### printByWord - way #1 (split)");
+        System.out.println("### printByWord - way #1 (String.split)");
         int words = 0;
         for (String word : text.split("[\\s\\.\\,\\-\\[\\]{}\'\"<>!@#\\$\\^%&*_+=]")) {
             if (!word.isEmpty()) {
@@ -175,9 +248,14 @@ public class HelloString {
         }
         System.out.println("words = " + words);
     } 
-    
+
+    /** Разделители слов */
     private static final String DELIMITERS = " \t\n\r\'\".,?;:|\\[]{}()!@#$%^&*-_+=<>";
     
+    /**
+     * Печать слов из текста на каждой строке (StringTokenizer)
+     * @param text исходный текст
+     */
     public void printByWord2(String text) {
         System.out.println("### printByWord - way #2 (StringTokenizer)");
         int words = 0;
@@ -189,6 +267,10 @@ public class HelloString {
         System.out.println("words = " + words);
     } 
 
+    /**
+     * Печать слов из текста на каждой строке (for by symbol)
+     * @param text исходный текст
+     */
     public void printByWord3(String text) {
         System.out.println("### printByWord - way #3 (for by symbol)");
         int words = 0;
@@ -221,8 +303,12 @@ public class HelloString {
         System.out.println("words = " + words);
     } 
 
+    /**
+     * Печать слов из текста на каждой строке (String.replaceAll)
+     * @param text исходный текст
+     */
     public void printByWord4(String text) {
-        System.out.println("### printByWord - way #4 (String.replace)");
+        System.out.println("### printByWord - way #4 (String.replaceAll)");
         text = text
                 .replaceAll("[\\s\\.\\,\\-\\[\\]{}\'\"<>!@#\\$\\^%&*_+=]+", "\n")
                 .replaceAll("^\n|\n$", "");
