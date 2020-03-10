@@ -7,11 +7,11 @@ plugins {
 description = 'Примеры классов для изучения основ Java SE'
 group = 'ru.lionsoft'
 version = '1.0-SNAPSHOT'
-sourceCompatibility = '13'
+
 mainClassName = 'ru.lionsoft.javase.hello.HelloApp'
 
-compileJava.options.encoding = "UTF-8"
-compileTestJava.options.encoding = "UTF-8"
+//compileJava.options.encoding = "UTF-8"
+//compileTestJava.options.encoding = "UTF-8"
 
 ext.license = file("${rootDir}/licenseheader.txt") 
 
@@ -19,51 +19,34 @@ repositories {
     mavenCentral()
 }
 
-//java {
-//    sourceCompatibility = JavaVersion.VERSION_HIGHER
-//    targetCompatibility = JavaVersion.VERSION_HIGHER
-//
-//}
-
 jar {
     manifest {
         attributes 'Main-Class': "${mainClassName}"
     }
 }
 
-//tasks.withType(JavaCompile) {
-//    options.encoding = 'UTF-8'
-//    options.compilerArgs += "--enable-preview"
-//}
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    sourceCompatibility = 13
+    targetCompatibility = 13
+//    options.compilerArgs += "-parameters"
+    options.compilerArgs += "--release"
+    options.compilerArgs += "13"
+    options.compilerArgs += "--enable-preview"
+}
 
-//tasks.withType(Test) {
-//    systemProperty "file.encoding", "utf-8"
-//    jvmArgs += "--enable-preview"
-//}
+tasks.withType(Test) {
+    systemProperty "file.encoding", "utf-8"
+    jvmArgs += "--enable-preview"
+}
 
-//tasks.withType(JavaExec) {
-//    systemProperty "file.encoding", "utf-8"
-//    jvmArgs += '--enable-preview'
-//}
-
-//compileJava {
-//    options.compilerArgs += ["--enable-preview"]
-//}
-
-//test {
-//    jvmArgs '--enable-preview'
-//}
-
-//run {
-//    jvmArgs '--enable-preview'
-//}
+tasks.withType(JavaExec) {
+    systemProperty "file.encoding", "utf-8"
+    jvmArgs += "--enable-preview"
+}
 
 //tasks.withType(JavaCompile).each {
 //    it.options.compilerArgs.add('--enable-preview')
-//}
-
-//test {
-//    jvmArgs(['--enable-preview'])
 //}
 
 dependencies {
@@ -112,7 +95,6 @@ dependencies {
     // Oracle JDBC Driver
     // https://mvnrepository.com/artifact/oracle/oracle-jdbc
 //    compile group: 'oracle', name: 'oracle-jdbc', version: '12.1.0.2'
-
 
     /* ########### JPA ############ */
  

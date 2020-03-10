@@ -218,7 +218,7 @@ public class HelloApp {
         }
         System.out.println(output);
         
-        // for JDK12+ (preview)
+        // for JDK12 (--enable-preview)
 //        System.out.println("#### Конструкция switch с несколькими case (JDK12):");
 //        num = 2;
 //        output = switch (num) {
@@ -228,19 +228,17 @@ public class HelloApp {
 //            default:      break 24;
 //        };
 //        System.out.println(output);
-//
-//        System.out.println("#### Конструкция switch с несколькими case (JDK12 lambda):");
-//        num = 5;
-//        output = switch (num) {
-//            case 1       -> 3;
-//            case 2, 3, 4 -> {
-//                int odd = num % 2;
-//                break odd == 0 ? 6 : 7;
-//            }
-//            case 5       -> 12;
-//            default      -> 24;
-//        };
-//        System.out.println(output);
+
+        // for JDK12+ (--enable-preview)
+        System.out.println("#### Конструкция switch с несколькими case (JDK12+ lambda):");
+        num = 5;
+        output = switch (num) {
+            case 1       -> 3;
+            case 2, 3, 4 -> num % 2 == 0 ? 6 : 7;
+            case 5       -> 12;
+            default      -> 24;
+        };
+        System.out.println(output);
 
         System.out.println("#### Тернарная операция:");
         int x = 3;
@@ -290,6 +288,10 @@ public class HelloApp {
     public void vaTest(String msg, int... v) {
         System.out.println("ru.lionsoft.javase.hello.HelloApp.vaTest()");
         System.out.println("msg: " + msg);
+        if (v == null) {
+            System.out.println("v: null");
+            return;
+        }
         System.out.println("Number of args: " + v.length);
         System.out.print("Contents: ");
         for (int x : v) {
