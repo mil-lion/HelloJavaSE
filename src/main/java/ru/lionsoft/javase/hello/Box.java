@@ -36,7 +36,7 @@ public class Box<T extends Number>
     /**
      * Перечисление стандартных типоразмеров коробки
      */
-    public static enum TyepSize {
+    public static enum TypeSize {
         /** По умолчанию */
         Default,
         /** Малая */
@@ -302,7 +302,7 @@ public class Box<T extends Number>
      * Конструктор коробки стандартных размеров
      * @param type типоразмер кробки
      */
-    public Box(TyepSize type) {
+    public Box(TypeSize type) {
         switch (type) {
             case Small:
                 width = (T)Integer.valueOf(1);
