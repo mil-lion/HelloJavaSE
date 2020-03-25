@@ -72,10 +72,10 @@ public class HelloCollection {
         boxSet1.add(new Box(1, 2, 3));
         boxSet1.add(new Box(3, 2, 1));
         boxSet1.add(new Box(10));
-        boxSet1.add(new Box(Box.TyepSize.Default));
-        boxSet1.add(new Box(Box.TyepSize.Large));
-        boxSet1.add(new Box(Box.TyepSize.Small));
-        boxSet1.add(new Box(Box.TyepSize.Medium));
+        boxSet1.add(new Box(Box.TypeSize.Default));
+        boxSet1.add(new Box(Box.TypeSize.Large));
+        boxSet1.add(new Box(Box.TypeSize.Small));
+        boxSet1.add(new Box(Box.TypeSize.Medium));
         boxSet1.add(new Box(1, 2, 3));
         boxSet1.add(new Box(1));
         System.out.println("boxSet1.size = " + boxSet1.size());
@@ -87,10 +87,10 @@ public class HelloCollection {
         boxSet2.add(new Box(1, 2, 3));
         boxSet2.add(new Box(3, 2, 1));
         boxSet2.add(new Box(10));
-        boxSet2.add(new Box(Box.TyepSize.Default));
-        boxSet2.add(new Box(Box.TyepSize.Large));
-        boxSet2.add(new Box(Box.TyepSize.Small));
-        boxSet2.add(new Box(Box.TyepSize.Medium));
+        boxSet2.add(new Box(Box.TypeSize.Default));
+        boxSet2.add(new Box(Box.TypeSize.Large));
+        boxSet2.add(new Box(Box.TypeSize.Small));
+        boxSet2.add(new Box(Box.TypeSize.Medium));
         boxSet2.add(new Box(1, 2, 3));
         boxSet2.add(new Box(1));
         System.out.println("boxSet2.size = " + boxSet2.size());
@@ -117,9 +117,9 @@ public class HelloCollection {
         
         // Колекция коробок
         List<Box<Integer>> boxes = new LinkedList<>();
-        boxes.add(new Box(Box.TyepSize.Large));
-        boxes.add(new Box(Box.TyepSize.Small)); 
-        boxes.add(new Box(Box.TyepSize.Medium));
+        boxes.add(new Box(Box.TypeSize.Large));
+        boxes.add(new Box(Box.TypeSize.Small)); 
+        boxes.add(new Box(Box.TypeSize.Medium));
         boxes.add(new Box(10));
         printCollection("boxes", boxes);
 
@@ -159,7 +159,7 @@ public class HelloCollection {
         Map<String, Box> dict1 = new HashMap<>();
         Map<Box, String> dict2 = new TreeMap<>();
         
-        for (Box.TyepSize typeSize : Box.TyepSize.values()) {
+        for (Box.TypeSize typeSize : Box.TypeSize.values()) {
             dict1.put(typeSize.name(), new Box(typeSize));
             dict2.put(new Box(typeSize), typeSize.name());
         }

@@ -55,8 +55,8 @@ public class HelloArray {
 
         // Массив объектов
         Box[] boxArray = {
-            new Box(Box.TyepSize.Large), new Box(Box.TyepSize.Small), 
-            new Box(Box.TyepSize.Medium), new Box(10)
+            new Box(Box.TypeSize.Large), new Box(Box.TypeSize.Small), 
+            new Box(Box.TypeSize.Medium), new Box(10)
         };
         System.out.println("boxArray = " + Arrays.toString(boxArray));
 
