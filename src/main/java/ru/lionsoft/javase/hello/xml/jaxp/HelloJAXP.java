@@ -30,11 +30,16 @@ import org.xml.sax.SAXException;
 import ru.lionsoft.javase.hello.Box;
 
 /**
- *
+ * Пример работы с XML документами с помощью JAXP
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
 public class HelloJAXP {
     
+    /**
+     * Главный метод программы
+     * @param args аргументы командной строки
+     * @throws Exception ошибки работы с XML
+     */
     public static void main(String[] args) throws Exception {
         HelloJAXP app = new HelloJAXP();
         
@@ -66,11 +71,24 @@ public class HelloJAXP {
     
      */
     
+    /**
+     * Записать обхект Box в XML файл
+     * @param box ссылка на коробку
+     * @param filename имя файла XML
+     * @throws ParserConfigurationException ошибка конфигурации парсера
+     * @throws TransformerException ошибка преобразования DOM дерева в файл
+     */
     public void writeBoxToXmlFile(Box box, String filename) throws ParserConfigurationException, TransformerException {
         Document xmlDoc = createDomTree(box);
         writeXmlDomTreeToFile(xmlDoc, filename);
     }
 
+    /**
+     * Создание DOM дерева для коробки
+     * @param box ссылка на коробку
+     * @return ссылка XML документ
+     * @throws ParserConfigurationException ошибка конфигурации парсера
+     */
     private Document createDomTree(Box box) throws ParserConfigurationException {
         // Create XML Document Builder
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -94,23 +112,45 @@ public class HelloJAXP {
         return xmlDoc;
     }
 
+    /**
+     * Создать элемент с текстом
+     * @param doc ссылка на XML документ
+     * @param name имя элемента
+     * @param value значение элемента
+     * @return ссылка на созданный элемент
+     */
     private Element createTextElement(Document doc, String name, String value) {
         Element element = doc.createElement(name);
         element.appendChild(doc.createTextNode(value));
         return element;
     }
     
+    /**
+     * Запись XML документа (DOM дерева) в файл
+     * @param xmlDoc ссылка на XML документа
+     * @param filename имя файла
+     * @throws TransformerConfigurationException ошибка конфигурации преобразователя
+     * @throws TransformerException ошибка преобразования
+     */
     private void writeXmlDomTreeToFile(Document xmlDoc, String filename) throws TransformerConfigurationException, TransformerException {
         // Source
         Source srcXml = new DOMSource(xmlDoc);
         // Result
         Result dstFile = new StreamResult(filename);
-        // Create Transormator
+        // Create Transormer
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.transform(srcXml, dstFile);
     }
 
+    /**
+     * Чтение объекта Box из XML файл
+     * @param filename имя файла
+     * @return прочитанный объект которбки
+     * @throws ParserConfigurationException ошибка конфигурации парсера
+     * @throws SAXException ошибка парсера
+     * @throws IOException ошибка ввода/вывода
+     */
     public Box readBoxFromXmlFile(String filename) throws ParserConfigurationException, SAXException, IOException {
         Box box = new Box();
         // Create XML Document Builder
@@ -156,6 +196,11 @@ public class HelloJAXP {
         return box;
     }
 
+    /**
+     * Получить значение элемента с текстом
+     * @param element ссылка на элемент
+     * @return значение элемента с текстом
+     */
     private String getTextElementValue(Element element) {
         NodeList childNodes = element.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
