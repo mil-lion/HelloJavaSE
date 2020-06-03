@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import ru.lionsoft.javase.hello.gui.ShapeDraw;
 import ru.lionsoft.javase.hello.json.ColorJsonAdapter;
-import ru.lionsoft.javase.hello.xml.jaxb.ColorXmlAdapter;
+import ru.lionsoft.javase.hello.xml.jaxb.ColorTextXmlAdapter;
 
 /**
  * Абстрактный класс с общими свойствами всех фигур
@@ -56,7 +56,7 @@ public abstract class AbstractShape implements ShapeDraw {
      * @return the value of color
      */
 //    @XmlAttribute
-    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
+    @XmlJavaTypeAdapter(ColorTextXmlAdapter.class)
     @JsonbTypeAdapter(ColorJsonAdapter.class)
     public Color getColor() {
         return color;
