@@ -9,7 +9,7 @@
 package ru.lionsoft.javase.hello.xml.jaxp;
 
 import java.awt.Color;
-import java.util.stream.Stream;
+import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -24,6 +24,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import ru.lionsoft.javase.hello.Box;
 
 /**
@@ -38,16 +41,17 @@ public class HelloJAXP {
         // Write Box to XML File
         Box box1 = new Box(1, 2, 3, new Color(63, 127, 255));
         app.writeBoxToXmlFile(box1, "box.xml");
+        System.out.println("write box: " + box1);
         
         // Read Box From XML File
         Box box2 = app.readBoxFromXmlFile("box.xml");
-        System.out.println("box = " + box2);
+        System.out.println("read box: " + box2);
        
     }
 
     /*
     DOM Tree for class Box
-    xml - XML document
+    xmlDoc - XML document
       +- box - root element "box"
            +- width - element "width"
                 +- 1 - text node
@@ -56,23 +60,15 @@ public class HelloJAXP {
            +- length - element "length"
                 +- 3 - text node
            +- color - element "color"
-                +- red - attribute "red"
+                +- red   - attribute "red"
                 +- green - attribute "green"
-                +- blue - attribute "blue"
+                +- blue  - attribute "blue"
     
      */
     
-    private void writeBoxToXmlFile(Box box, String filename) throws ParserConfigurationException, TransformerException {
+    public void writeBoxToXmlFile(Box box, String filename) throws ParserConfigurationException, TransformerException {
         Document xmlDoc = createDomTree(box);
         writeXmlDomTreeToFile(xmlDoc, filename);
-    }
-
-    private Box readBoxFromXmlFile(String filename) throws ParserConfigurationException {
-        // Create XML Document Builder
-        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = builderFactory.newDocumentBuilder();
-
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private Document createDomTree(Box box) throws ParserConfigurationException {
@@ -85,9 +81,9 @@ public class HelloJAXP {
         Element root = xmlDoc.createElement("box");
         xmlDoc.appendChild(root);
         // Create text elements for Box
-        root.appendChild(XmlTextElement.createTextElement(xmlDoc, "width", box.getWidth().toString()));
-        root.appendChild(XmlTextElement.createTextElement(xmlDoc, "height", box.getHeight().toString()));
-        root.appendChild(XmlTextElement.createTextElement(xmlDoc, "length", box.getLength().toString()));
+        root.appendChild(createTextElement(xmlDoc, "width", box.getWidth().toString()));
+        root.appendChild(createTextElement(xmlDoc, "height", box.getHeight().toString()));
+        root.appendChild(createTextElement(xmlDoc, "length", box.getLength().toString()));
         // Create element Color
         Element color = xmlDoc.createElement("color");
         color.setAttribute("red", Integer.toString(box.getColor().getRed()));
@@ -98,15 +94,77 @@ public class HelloJAXP {
         return xmlDoc;
     }
 
+    private Element createTextElement(Document doc, String name, String value) {
+        Element element = doc.createElement(name);
+        element.appendChild(doc.createTextNode(value));
+        return element;
+    }
+    
     private void writeXmlDomTreeToFile(Document xmlDoc, String filename) throws TransformerConfigurationException, TransformerException {
         // Source
         Source srcXml = new DOMSource(xmlDoc);
         // Result
         Result dstFile = new StreamResult(filename);
         // Create Transormator
-        Transformer transformer = TransformerFactory.newInstance().newTransformer(srcXml);
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.transform(srcXml, dstFile);
+    }
+
+    public Box readBoxFromXmlFile(String filename) throws ParserConfigurationException, SAXException, IOException {
+        Box box = new Box();
+        // Create XML Document Builder
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = builderFactory.newDocumentBuilder();
+        // Parse XML file
+        Document xmlDoc = builder.parse(filename);
+        // Get root element
+        Element root = xmlDoc.getDocumentElement();
+        System.out.println("root element: " + root.getTagName());
+        // Child nodes of root element
+        NodeList rootChilds = root.getChildNodes();
+        for (int i = 0; i < rootChilds.getLength(); i++) {
+            Node node = rootChilds.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element element = (Element) node;
+                System.out.println("elemnt: " + element.getTagName());
+                switch (element.getTagName()) {
+                    case "width":
+                        String value = getTextElementValue(element);
+                        box.setWidth(Integer.parseInt(value));
+                        break;
+                    
+                    case "height":
+                        value = getTextElementValue(element);
+                        box.setHeight(Integer.parseInt(value));
+                        break;
+                    
+                    case "length":
+                        value = getTextElementValue(element);
+                        box.setLength(Integer.parseInt(value));
+                        break;
+                    
+                    case "color":
+                        int red = Integer.parseInt(element.getAttribute("red"));
+                        int green = Integer.parseInt(element.getAttribute("green"));
+                        int blue = Integer.parseInt(element.getAttribute("blue"));
+                        box.setColor(new Color(red, green, blue));
+                        break;
+                }
+            }
+        }
+        return box;
+    }
+
+    private String getTextElementValue(Element element) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() == Node.TEXT_NODE) {
+                return node.getNodeValue();
+            }
+        }
+        return null;
     }
     
 }
