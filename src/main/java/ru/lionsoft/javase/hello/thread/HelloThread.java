@@ -25,7 +25,7 @@ public class HelloThread {
             final String threadName = getName();
             System.out.printf("%s started...\n", threadName);
             try {
-                Thread.sleep(500);
+                sleep(500);
             } catch (InterruptedException ex) {
                 System.out.println("Thread has been interrupted!");
             }
@@ -47,7 +47,7 @@ public class HelloThread {
             while (!isInterrupted()) {
                 System.out.println("Loop #" + counter++);
                 try {
-                    Thread.sleep(100);
+                    sleep(100);
                 } catch (InterruptedException ex) {
                     System.out.println("Thread has been interrupted!");
                     System.out.println("isInterrupted = " + isInterrupted()); // false
