@@ -66,33 +66,33 @@ public class HelloCollection {
         }
         printCollection("intSet", intSet);
         
-        Set<Box> boxSet1 = new HashSet<>();
-        boxSet1.add(new Box());
+        Set<BoxGeneric> boxSet1 = new HashSet<>();
+        boxSet1.add(new BoxGeneric());
         boxSet1.add(null); // ok!
-        boxSet1.add(new Box(1, 2, 3));
-        boxSet1.add(new Box(3, 2, 1));
-        boxSet1.add(new Box(10));
-        boxSet1.add(new Box(Box.TypeSize.Default));
-        boxSet1.add(new Box(Box.TypeSize.Large));
-        boxSet1.add(new Box(Box.TypeSize.Small));
-        boxSet1.add(new Box(Box.TypeSize.Medium));
-        boxSet1.add(new Box(1, 2, 3));
-        boxSet1.add(new Box(1));
+        boxSet1.add(new BoxGeneric(1, 2, 3));
+        boxSet1.add(new BoxGeneric(3, 2, 1));
+        boxSet1.add(new BoxGeneric(10));
+        boxSet1.add(new BoxGeneric(BoxGeneric.TypeSize.Default));
+        boxSet1.add(new BoxGeneric(BoxGeneric.TypeSize.Large));
+        boxSet1.add(new BoxGeneric(BoxGeneric.TypeSize.Small));
+        boxSet1.add(new BoxGeneric(BoxGeneric.TypeSize.Medium));
+        boxSet1.add(new BoxGeneric(1, 2, 3));
+        boxSet1.add(new BoxGeneric(1));
         System.out.println("boxSet1.size = " + boxSet1.size());
         printCollection("boxSet1", boxSet1);
         
-        Set<Box> boxSet2 = new TreeSet<>();
-        boxSet2.add(new Box());
+        Set<BoxGeneric> boxSet2 = new TreeSet<>();
+        boxSet2.add(new BoxGeneric());
 //        boxSet2.add(null); // TreeSet не может содержать элемент null
-        boxSet2.add(new Box(1, 2, 3));
-        boxSet2.add(new Box(3, 2, 1));
-        boxSet2.add(new Box(10));
-        boxSet2.add(new Box(Box.TypeSize.Default));
-        boxSet2.add(new Box(Box.TypeSize.Large));
-        boxSet2.add(new Box(Box.TypeSize.Small));
-        boxSet2.add(new Box(Box.TypeSize.Medium));
-        boxSet2.add(new Box(1, 2, 3));
-        boxSet2.add(new Box(1));
+        boxSet2.add(new BoxGeneric(1, 2, 3));
+        boxSet2.add(new BoxGeneric(3, 2, 1));
+        boxSet2.add(new BoxGeneric(10));
+        boxSet2.add(new BoxGeneric(BoxGeneric.TypeSize.Default));
+        boxSet2.add(new BoxGeneric(BoxGeneric.TypeSize.Large));
+        boxSet2.add(new BoxGeneric(BoxGeneric.TypeSize.Small));
+        boxSet2.add(new BoxGeneric(BoxGeneric.TypeSize.Medium));
+        boxSet2.add(new BoxGeneric(1, 2, 3));
+        boxSet2.add(new BoxGeneric(1));
         System.out.println("boxSet2.size = " + boxSet2.size());
         printCollection("boxSet2", boxSet2);
         
@@ -116,7 +116,7 @@ public class HelloCollection {
         printList("strList", strList);
         
         // Колекция коробок
-        List<Box<Integer>> boxes = new LinkedList<>();
+        List<Box> boxes = new LinkedList<>();
         boxes.add(new Box(Box.TypeSize.Large));
         boxes.add(new Box(Box.TypeSize.Small)); 
         boxes.add(new Box(Box.TypeSize.Medium));
@@ -159,7 +159,7 @@ public class HelloCollection {
         Map<String, Box> dict1 = new HashMap<>();
         Map<Box, String> dict2 = new TreeMap<>();
         
-        for (Box.TypeSize typeSize : Box.TypeSize.values()) {
+        for (var typeSize : Box.TypeSize.values()) {
             dict1.put(typeSize.name(), new Box(typeSize));
             dict2.put(new Box(typeSize), typeSize.name());
         }

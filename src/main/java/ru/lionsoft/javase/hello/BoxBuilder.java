@@ -10,39 +10,63 @@ package ru.lionsoft.javase.hello;
 
 import java.awt.Color;
 
+/**
+ * Строитель коробок
+ * @author Igor Morenko
+ */
+public class BoxBuilder {
 
-public class BoxBuilder<T extends Number> {
-
-    private T width;
-    private T height;
-    private T length;
+    // ***************** Fields ******************
+    
+    private int width;
+    private int height;
+    private int length;
     private Color color = Color.BLACK;
+
+    // ***************** Constructors ******************
 
     public BoxBuilder() {
     }
 
-    public BoxBuilder<T> setWidth(T width) {
+    public BoxBuilder(int width, int height, int length) {
+        this.width = width;
+        this.height = height;
+        this.length = length;
+    }
+    
+    public BoxBuilder(Box box) {
+        width = box.getWidth();
+        height = box.getHeight();
+        length = box.getLength();
+        color = box.getColor();
+    }
+
+    // ***************** Setters ******************
+    
+    public BoxBuilder setWidth(int width) {
         this.width = width;
         return this;
     }
 
-    public BoxBuilder<T> setHeight(T height) {
+    public BoxBuilder setHeight(int height) {
         this.height = height;
         return this;
     }
 
-    public BoxBuilder<T> setLength(T length) {
+    public BoxBuilder setLength(int length) {
         this.length = length;
         return this;
     }
 
-    public BoxBuilder<T> setColor(Color color) {
+    public BoxBuilder setColor(Color color) {
         this.color = color;
         return this;
     }
 
-    public Box<T> createBox() {
-        return new Box<T>(width, height, length, color);
+    // ***************** Build ******************
+
+    public Box createBox() {
+        return new Box(width, height, length, color);
     }
     
 }

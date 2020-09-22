@@ -28,6 +28,7 @@ public class HelloApp {
         app.циклы();
         app.testVarArgs();
         app.testBox();
+        app.testBoxGeneric();
 
         System.out.println("-8 = " + NumberUtils.intToBinaryString(-8));
         System.out.println("-8 >>> 2 = " + (-8>>>2) + " = " + NumberUtils.intToBinaryString(-8>>>2));
@@ -116,19 +117,53 @@ public class HelloApp {
      */
     public void testBox() {
         System.out.println("#### test Box:");
-        Box<Short> b1 = new Box<>();
+        
+        Box b1 = new Box();
         printBox("b1", b1);
-        Box<Integer> b2 = new Box<>(1, 2, 3);
+        
+        Box b2 = new Box(1, 2, 3);
         printBox("b2", b2);
-        Box<Long> b3 = new Box<>(4L, 5L, 6L);
+        
+        Box b3 = new Box(10);
         printBox("b3", b3);
-        // Using Factoty
-        Box b4 = Box.createStandardSizeBox(Box.TYPE_SIZE_LARGE);
+        
+        Box b4 = new Box(5, 10);
         printBox("b4", b4);
-        // Using Builder
-        BoxBuilder<Double> boxBuilder = new BoxBuilder<>();
-        Box b5 = boxBuilder.setWidth(1.5).setHeight(2.4).setLength(3.6).createBox();
+        
+        Box b5 = new Box(Box.TypeSize.Medium);
         printBox("b5", b5);
+        
+        // Using Factoty
+        Box b6 = BoxFactory.createStandardBox(Box.TYPE_SIZE_LARGE);
+        printBox("b6", b6);
+        
+        // Using Builder
+        BoxBuilder builder = new BoxBuilder();
+        Box b7 = builder
+                .setWidth(2)
+                .setHeight(3)
+                .setLength(5)
+                .createBox();
+        printBox("b7", b7);
+    }
+
+    /**
+     * Метод для тестирования класса BoxGeneric
+     */
+    public void testBoxGeneric() {
+        System.out.println("#### test BoxGeneric:");
+
+        BoxGeneric<Short> b1 = new BoxGeneric<>();
+        printBox("b1", b1);
+
+        BoxGeneric<Integer> b2 = new BoxGeneric<>(1, 2, 3);
+        printBox("b2", b2);
+
+        BoxGeneric<Long> b3 = new BoxGeneric<>(4L, 5L, 6L);
+        printBox("b3", b3);
+
+//        BoxGeneric<String> b4 = new BoxGeneric<>("ширина", "высота", "длина"); // error
+//        printBox("b4 ", b4);
     }
 
     /**
@@ -137,6 +172,18 @@ public class HelloApp {
      * @param box ссылка на коробку
      */
     public void printBox(String name, Box box) {
+        System.out.println(name + " = " + box);
+        System.out.println(name + ".perimeter     = " + box.getPerimeter() + " m");
+        System.out.println(name + ".squareSurface = " + box.getSquareSurface() + " m\u00b2");
+        System.out.println(name + ".volume        = " + box.getVolume() + " m\u00b3");
+    }
+
+    /**
+     * Метод распечатки на экран информации о коробке
+     * @param name имя переменной
+     * @param box ссылка на коробку
+     */
+    public void printBox(String name, BoxGeneric box) {
         System.out.println(name + " = " + box);
         System.out.println(name + ".perimeter     = " + box.getPerimeter() + " m");
         System.out.println(name + ".squareSurface = " + box.getSquareSurface() + " m\u00b2");

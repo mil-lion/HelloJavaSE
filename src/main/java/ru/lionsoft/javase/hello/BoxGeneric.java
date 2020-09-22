@@ -10,13 +10,15 @@ package ru.lionsoft.javase.hello;
 
 import java.awt.Color;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Класс описывающий объект коробка
+ * @param <T> тип данных измерения коробки (ширина, высота, длина)
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
-public class Box 
-        implements Serializable, AutoCloseable, Comparable<Box> { 
+public class BoxGeneric<T extends Number> 
+        implements Serializable, AutoCloseable, Comparable<BoxGeneric> { 
     
     private static final long serialVersionUID = 1L;
     
@@ -54,7 +56,7 @@ public class Box
     /**
      * Размер кроробки по умолчанию
      */
-    public static int defaultSize = 1;
+    public static Double defaultSize = 0.0;
     
     // ************* Properties **************
     
@@ -84,14 +86,14 @@ public class Box
     /**
      * Ширина коробки
      */
-    private int width;
+    private T width;
 
     /**
      * Получить ширину коробки
      *
      * @return значение ширины
      */
-    public int getWidth() {
+    public T getWidth() {
         return width;
     }
 
@@ -100,7 +102,7 @@ public class Box
      *
      * @param width новое значение ширины
      */
-    public void setWidth(int width) {
+    public void setWidth(T width) {
         this.width = width;
         hash = 0; // требуется пересчитать хэш-функцию
     }
@@ -108,14 +110,14 @@ public class Box
     /**
      * Высота коробки
      */
-    private int height;
+    private T height;
 
     /**
      * Get the value of height
      *
      * @return the value of height
      */
-    public int getHeight() {
+    public T getHeight() {
         return height;
     }
 
@@ -124,7 +126,7 @@ public class Box
      *
      * @param height new value of height
      */
-    public void setHeight(int height) {
+    public void setHeight(T height) {
         this.height = height;
         hash = 0; // требуется пересчитать хэш-функцию
     }
@@ -132,14 +134,14 @@ public class Box
     /**
      * Длина коробки
      */
-    private int length;
+    private T length;
 
     /**
      * Get the value of length
      *
      * @return the value of length
      */
-    public int getLength() {
+    public T getLength() {
         return length;
     }
 
@@ -148,7 +150,7 @@ public class Box
      *
      * @param length new value of length
      */
-    public void setLength(int length) {
+    public void setLength(T length) {
         this.length = length;
         hash = 0; // требуется пересчитать хэш-функцию
     }
@@ -160,7 +162,7 @@ public class Box
      * @return значение перимета коробки
      */
     public double getPerimeter() {
-        return perimeter(width, height, length);
+        return perimeter(nvl(width), nvl(height), nvl(length));
     }
     
     /**
@@ -168,7 +170,7 @@ public class Box
      * @return значение площади поверхности коробки
      */
     public double getSquareSurface() {
-        return squareSurface(width, height, length);
+        return squareSurface(nvl(width), nvl(height), nvl(length));
     }
 
     /**
@@ -176,7 +178,7 @@ public class Box
      * @return значение объема коробки
      */
     public double getVolume() {
-        return volume(width, height, length);
+        return volume(nvl(width), nvl(height), nvl(length));
     }
 
     // ************* Static Methods (Functions) **************
@@ -213,6 +215,16 @@ public class Box
     public static double volume(double width, double height, double length) {
         return width * height * length;
     }
+
+    /**
+     * Функция получения значения {@code double} для размера коробки
+     * @param <T> тип измерения коробки
+     * @param size разиер коробки
+     * @return 0 если размер {@code null} иначе размер коробки типа {@code double}
+     */
+    private static <T extends Number> double nvl(T size) {
+        return size != null ? size.doubleValue() : 0.0;
+    }
     
     /**
      * Функция сравнения коробок (по объему)
@@ -222,7 +234,7 @@ public class Box
      *  меньше 0 если первая коробка меньше другой,
      *  больше 0 если первая коробка больше другой
      */
-    public static int compare(Box b1, Box b2) {
+    public static int compare(BoxGeneric b1, BoxGeneric b2) {
         if (b1 == b2) return 0;
         if (b1 == null) return -1;
         if (b2 == null) return 1;
@@ -252,8 +264,8 @@ public class Box
     /**
      * Конструктор по умолчанию
      */
-    public Box() {
-        this(defaultSize);
+    public BoxGeneric() {
+        this((T)defaultSize);
     }
 
     /**
@@ -262,7 +274,7 @@ public class Box
      * @param height высота коробки
      * @param length длина коробки
      */
-    public Box(int width, int height, int length) {
+    public BoxGeneric(T width, T height, T length) {
         this.width = width;
         this.height = height;
         this.length = length;
@@ -275,7 +287,7 @@ public class Box
      * @param length длина коробки
      * @param color цвет коробки
      */
-    public Box(int width, int height, int length, Color color) {
+    public BoxGeneric(T width, T height, T length, Color color) {
         this.width = width;
         this.height = height;
         this.length = length;
@@ -286,66 +298,67 @@ public class Box
      * Конструктор коробки в виде куба (все стороны равны)
      * @param size размер кробки
      */
-    public Box(int size) {
+    public BoxGeneric(T size) {
         this(size, size, size);
     }
     
     /**
-     * Конструктор коробки в виде куба (все стороны равны)
+     * Конструктор коробки в виде квадрата (ширина и высота равны)
      * @param size размер кробки
      * @param length длина коробки
      */
-    public Box(int size, int length) {
+    public BoxGeneric(T size, T length) {
         this(size, size, length);
     }
     
     /**
      * Конструктор коробки стандартных размеров
-     * @param typeSize типоразмер кробки
+     * @param type типоразмер кробки
      */
-    public Box(TypeSize typeSize) {
-        switch (typeSize) {
+    public BoxGeneric(TypeSize type) {
+        switch (type) {
             case Small:
-                width = 1;
-                height = 2;
-                length = 3;
+                width = (T)Integer.valueOf(1);
+                height = (T)Integer.valueOf(2);
+                length = (T)Integer.valueOf(3);
                 break;
 
             case Medium:
-                width = 4;
-                height = 5;
-                length = 6;
+                width = (T)Integer.valueOf(4);
+                height = (T)Integer.valueOf(5);
+                length = (T)Integer.valueOf(6);
                 break;
 
             case Large:
-                width = 7;
-                height = 8;
-                length = 9;
+                width = (T)Integer.valueOf(7);
+                height = (T)Integer.valueOf(8);
+                length = (T)Integer.valueOf(9);
                 break;
 
             case ExtraLarge:
-                width = 10;
-                height = 11;
-                length = 12;
+                width = (T)Integer.valueOf(10);
+                height = (T)Integer.valueOf(11);
+                length = (T)Integer.valueOf(12);
                 break;
 
             default:
-                width = height = length = defaultSize;
+                width = height = length = (T)defaultSize;
         }
     }
 
-    // ************* Static Constructors (Method Factory) **************
+    // ************* Static Constructors (Factory) **************
     
     /**
      * Конструктор коробки заданных размеров 
      * (используется статический метод)
+     * @param <T> тип измерения коробки
      * @param width ширина коробки
      * @param height высота коробки
      * @param length длина коробки
      * @return новая коробка с заданными размерами
      */
-    public static Box createBox(int width, int height, int length) {
-        return new Box(width, height, length);
+    public static <T extends Number> BoxGeneric<T> createBox(T width, T height, T length) {
+        return new BoxGeneric<>(width, height, length);
     }
 
     /**
@@ -354,13 +367,13 @@ public class Box
      * @param type тип стандартной коробки
      * @return созданная коробка
      */
-    public static Box createStandardBox(char type) {
+    public static BoxGeneric createStandardSizeBox(char type) {
         return switch (type) {
-            case TYPE_SIZE_SMALL -> new Box(1, 2, 3);
-            case TYPE_SIZE_MEDIUM -> new Box(4, 5, 6);
-            case TYPE_SIZE_LARGE -> new Box(7, 8, 9);
-            case TYPE_SIZE_EXTRA_LARGE -> new Box(10, 11, 12);
-            default -> new Box(); // default
+            case TYPE_SIZE_SMALL  -> new BoxGeneric(1, 2, 3);
+            case TYPE_SIZE_MEDIUM -> new BoxGeneric(4, 5, 6);
+            case TYPE_SIZE_LARGE  -> new BoxGeneric(7, 8, 9);
+            case TYPE_SIZE_EXTRA_LARGE -> new BoxGeneric(10, 11, 12);
+            default -> new BoxGeneric(); // default
         };
     }
     
@@ -377,9 +390,9 @@ public class Box
         // значение хэш-функции закэшировано в поле класса
         if (hash == 0) {
             hash = 3;
-            hash = 59 * hash + width;
-            hash = 59 * hash + height;
-            hash = 59 * hash + length;
+            hash = 59 * hash + Double.hashCode(nvl(width));
+            hash = 59 * hash + Double.hashCode(nvl(height));
+            hash = 59 * hash + Double.hashCode(nvl(length));
         }
         return hash;
     }
@@ -394,29 +407,28 @@ public class Box
             return false;
         }
 //        if (getClass() != obj.getClass()) {
-        if (!(obj instanceof Box)) {
+        if (!(obj instanceof BoxGeneric)) {
             return false;
         }
-        // Use HashCode
         if (hashCode() != obj.hashCode()) {
             return false;
         }
-        final Box other = (Box) obj;
+        final BoxGeneric<?> other = (BoxGeneric<?>) obj;
         // TODO нужно реализовать правильное сравнение (9 комбинаций) всех сторон со всеми сторонами!
-        if (this.width != other.width) {
+        if (nvl(this.width) != nvl(other.width)) {
             return false;
         }
-        if (this.height != other.height) {
+        if (nvl(this.height) != nvl(other.height)) {
             return false;
         }
-        return this.length == other.length;
+        return nvl(this.length) == nvl(other.length);
     }
     
     // ************* Implements Interface Comparable<T> **************
 
     // Реализуем метод сравнения коробок для сортировки коробок
     @Override
-    public int compareTo(Box o) {
+    public int compareTo(BoxGeneric o) {
         // используем уже готовую функцию сравнения двух коробо по объему
         return compare(this, o);
     }
@@ -426,7 +438,7 @@ public class Box
     // Переписываем метод приведения коробки к строке для красивой печати коробки при отладке
     @Override
     public String toString() {
-        return "Box{" 
+        return "BoxGeneric{" 
                 + "width=" + width 
                 + ", height=" + height 
                 + ", length=" + length 

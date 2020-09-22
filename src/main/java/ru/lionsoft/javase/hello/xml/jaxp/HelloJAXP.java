@@ -99,9 +99,9 @@ public class HelloJAXP {
         Element root = xmlDoc.createElement("box");
         xmlDoc.appendChild(root);
         // Create text elements for Box
-        root.appendChild(createTextElement(xmlDoc, "width", box.getWidth().toString()));
-        root.appendChild(createTextElement(xmlDoc, "height", box.getHeight().toString()));
-        root.appendChild(createTextElement(xmlDoc, "length", box.getLength().toString()));
+        root.appendChild(createTextElement(xmlDoc, "width", Integer.toString(box.getWidth())));
+        root.appendChild(createTextElement(xmlDoc, "height", Integer.toString(box.getHeight())));
+        root.appendChild(createTextElement(xmlDoc, "length", Integer.toString(box.getLength())));
         // Create element Color
         Element color = xmlDoc.createElement("color");
         color.setAttribute("red", Integer.toString(box.getColor().getRed()));
