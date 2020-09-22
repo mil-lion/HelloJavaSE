@@ -23,7 +23,7 @@ import ru.lionsoft.javase.hello.db.jdbc.entities.DiscountCode;
  * Фасад для сущности Скидка
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
-public class DiscountCodeFacade extends AbstractFacade<DiscountCode> {
+public class DiscountCodeFacade extends AbstractFacade<DiscountCode, String> {
 
     /** Журнал */
     private static final Logger LOG = Logger.getLogger(DiscountCodeFacade.class.getName());
@@ -50,7 +50,7 @@ public class DiscountCodeFacade extends AbstractFacade<DiscountCode> {
             pstmt.setBigDecimal(1, rate);
             try (ResultSet rs = pstmt.executeQuery();) {
                 if (rs.next()) {
-                    discountCodes.add(fabric.createEntity(rs));
+                    discountCodes.add(factory.createEntity(rs));
                 }
             }
         }

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping>
+
+    <class name="ru.lionsoft.hello.spring.persist.entity.MusicItem" table="ITEMS">
+        <id name="id" column="ITEM_ID">
+            <generator class="identity"/>
+        </id>
+        <property name="num"/>
+        <property name="title" type="string" column="TITLE"/>
+        <property name="artist" type="string" column="ARTIST"/>
+        <property name="releaseDate" type="date" column="RELEASE_DATE"/>
+        <property name="listPrice" type="big_decimal" column="LIST_PRICE"/>
+        <property name="price" type="big_decimal" column="PRICE"/>
+    </class>
+
+</hibernate-mapping>

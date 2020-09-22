@@ -17,13 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ru.lionsoft.javase.hello.db.jdbc.orm.EntityFactory;
 
 /**
  * Абстрактный (универсальный) фасад для сущностией СУБД
  * @author Igor Morenko <morenko at lionsoft.ru>
  * @param <E> тип сущности
+ * @param <PK> тип первичного ключа сущности
  */
-public abstract class AbstractFacade<E> {
+public abstract class AbstractFacade<E, PK> {
 
     /** Журнал */
     private static final Logger LOG = Logger.getLogger(AbstractFacade.class.getName());
@@ -35,7 +37,7 @@ public abstract class AbstractFacade<E> {
     protected final Connection connection;
     
     /** Фабрика создания сущности */
-    protected final EntityFabric<E> fabric;
+    protected final EntityFactory<E> factory;
 
     /**
      * Конструктор фасада
@@ -45,9 +47,8 @@ public abstract class AbstractFacade<E> {
     public AbstractFacade(Class entityClass, Connection connection) {
         this.entityClass = entityClass;
         this.connection = connection;
-        fabric = EntityFabric.newInstance(entityClass);
+        factory = EntityFactory.newInstance(entityClass);
     }
-
 
     /**
      * Выбрать сущность по первичному ключу
@@ -55,15 +56,15 @@ public abstract class AbstractFacade<E> {
      * @return выбранная сущность, {@code null} если сущность не найдена
      * @throws SQLException ошибка SQL
      */
-    public E find(Object key) throws SQLException {
+    public E find(PK key) throws SQLException {
         E entity = null;
-        final String sqlText = fabric.getSqlSelect();
+        final String sqlText = factory.getSqlFindById();
         LOG.log(Level.INFO, "sql: {0}", sqlText);
         try (PreparedStatement pstmt = connection.prepareStatement(sqlText);) {
             pstmt.setObject(1, key);
             try (ResultSet rs = pstmt.executeQuery();) {
                 if (rs.next()) {
-                    entity = fabric.createEntity(rs);
+                    entity = factory.createEntity(rs);
                 }
             }
         }
@@ -77,12 +78,12 @@ public abstract class AbstractFacade<E> {
      */
     public List<E> findAll() throws SQLException {
         List<E> entities = new ArrayList<>();
-        final String sqlText = "SELECT * FROM " + fabric.getTableName();
+        final String sqlText = factory.getSqlFindAll();
         LOG.log(Level.INFO, "sql: {0}", sqlText);
         try (Statement stmt = connection.createStatement();) {
             try (ResultSet rs = stmt.executeQuery(sqlText);) {
                 while (rs.next()) {
-                    entities.add(fabric.createEntity(rs));
+                    entities.add(factory.createEntity(rs));
                 }
             }
         }
@@ -95,11 +96,11 @@ public abstract class AbstractFacade<E> {
      * @return кол-во вставленных записей
      * @throws SQLException ошибка SQL
      */
-    public int insert(E entity) throws SQLException {
-        final String sqlText = fabric.getSqlInsert();
+    public int create(E entity) throws SQLException {
+        final String sqlText = factory.getSqlInsert();
         LOG.log(Level.INFO, "sql: {0}", sqlText);
         try (PreparedStatement pstmt = connection.prepareStatement(sqlText);) {
-            fabric.setParameterForInsert(pstmt, entity);
+            factory.setParameterForInsert(pstmt, entity);
             return pstmt.executeUpdate();
         }
     }
@@ -111,10 +112,10 @@ public abstract class AbstractFacade<E> {
      * @throws SQLException ошибка SQL
      */
     public int update(E entity) throws SQLException {
-        final String sqlText = fabric.getSqlUpdate();
+        final String sqlText = factory.getSqlUpdate();
         LOG.log(Level.INFO, "sql: {0}", sqlText);
         try (PreparedStatement pstmt = connection.prepareStatement(sqlText);) {
-            fabric.setParameterForUpdate(pstmt, entity);
+            factory.setParameterForUpdate(pstmt, entity);
             return pstmt.executeUpdate();
         }
     }
@@ -126,10 +127,10 @@ public abstract class AbstractFacade<E> {
      * @throws SQLException ошибка SQL
      */
     public int delete(E entity) throws SQLException {
-        final String sqlText = fabric.getSqlDelete();
+        final String sqlText = factory.getSqlDelete();
         LOG.log(Level.INFO, "sql: {0}", sqlText);
         try (PreparedStatement pstmt = connection.prepareStatement(sqlText);) {
-            fabric.setParameterForDelete(pstmt, entity);
+            factory.setParameterForDelete(pstmt, entity);
             return pstmt.executeUpdate();
         }
     }
@@ -140,7 +141,7 @@ public abstract class AbstractFacade<E> {
      * @throws SQLException ошибка SQL
      */
     public long count() throws SQLException {
-        final String sqlText = "SELECT count(*) FROM " + fabric.getTableName();
+        final String sqlText = "SELECT count(*) FROM " + factory.getTableName();
         LOG.log(Level.INFO, "sql: {0}", sqlText);
         long count = 0;
         try (Statement stmt = connection.createStatement();) {

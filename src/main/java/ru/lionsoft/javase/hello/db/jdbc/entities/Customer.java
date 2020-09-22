@@ -10,11 +10,11 @@ package ru.lionsoft.javase.hello.db.jdbc.entities;
 
 import java.io.Serializable;
 import java.util.Objects;
-import ru.lionsoft.javase.hello.db.jdbc.annotation.Column;
-import ru.lionsoft.javase.hello.db.jdbc.annotation.PrimaryKey;
+import ru.lionsoft.javase.hello.db.jdbc.orm.annotation.Column;
+import ru.lionsoft.javase.hello.db.jdbc.orm.annotation.Id;
 
 /**
- *
+ * Сущность Клиент
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
 public class Customer implements Serializable {
@@ -25,271 +25,64 @@ public class Customer implements Serializable {
     
     // id
     
-    @PrimaryKey
+    @Id
     @Column(name = "CUSTOMER_ID")
-    private Integer id;
-
-    /**
-     * Get the value of id
-     *
-     * @return the value of id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * Set the value of id
-     *
-     * @param id new value of id
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public Integer id;
 
     // discountCode
     
     @Column(name = "DISCOUNT_CODE")
-    private String discountCode;
-
-    /**
-     * Get the value of discountCode
-     *
-     * @return the value of discountCode
-     */
-    public String getDiscountCode() {
-        return discountCode;
-    }
-
-    /**
-     * Set the value of discountCode
-     *
-     * @param discountCode new value of discountCode
-     */
-    public void setDiscountCode(String discountCode) {
-        this.discountCode = discountCode;
-    }
+    public String discountCode;
 
     // zip
     
-    private String zip;
-
-    /**
-     * Get the value of zip
-     *
-     * @return the value of zip
-     */
-    public String getZip() {
-        return zip;
-    }
-
-    /**
-     * Set the value of zip
-     *
-     * @param zip new value of zip
-     */
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
+    @Column
+    public String zip;
 
     // name
-    
-    private String name;
 
-    /**
-     * Get the value of name
-     *
-     * @return the value of name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Set the value of name
-     *
-     * @param name new value of name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Column
+    public String name;
 
     // addressline1
-    
-    private String addressline1;
 
-    /**
-     * Get the value of addressline1
-     *
-     * @return the value of addressline1
-     */
-    public String getAddressline1() {
-        return addressline1;
-    }
-
-    /**
-     * Set the value of addressline1
-     *
-     * @param addressline1 new value of addressline1
-     */
-    public void setAddressline1(String addressline1) {
-        this.addressline1 = addressline1;
-    }
+    @Column
+    public String addressline1;
 
     // addressline2
-    
-    private String addressline2;
 
-    /**
-     * Get the value of addressline2
-     *
-     * @return the value of addressline2
-     */
-    public String getAddressline2() {
-        return addressline2;
-    }
-
-    /**
-     * Set the value of addressline2
-     *
-     * @param addressline2 new value of addressline2
-     */
-    public void setAddressline2(String addressline2) {
-        this.addressline2 = addressline2;
-    }
+    @Column
+    public String addressline2;
 
     // city
-    
-    private String city;
 
-    /**
-     * Get the value of city
-     *
-     * @return the value of city
-     */
-    public String getCity() {
-        return city;
-    }
-
-    /**
-     * Set the value of city
-     *
-     * @param city new value of city
-     */
-    public void setCity(String city) {
-        this.city = city;
-    }
+    @Column
+    public String city;
 
     // state
-    
-    private String state;
 
-    /**
-     * Get the value of state
-     *
-     * @return the value of state
-     */
-    public String getState() {
-        return state;
-    }
+    @Column
+    public String state;
 
-    /**
-     * Set the value of state
-     *
-     * @param state new value of state
-     */
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    // phone
-    
-    private String phone;
-
-    /**
-     * Get the value of phone
-     *
-     * @return the value of phone
-     */
-    public String getPhone() {
-        return phone;
-    }
-
-    /**
-     * Set the value of phone
-     *
-     * @param phone new value of phone
-     */
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+     // phone
+ 
+    @Column
+    public String phone;
 
     // fax
-    
-    private String fax;
 
-    /**
-     * Get the value of fax
-     *
-     * @return the value of fax
-     */
-    public String getFax() {
-        return fax;
-    }
-
-    /**
-     * Set the value of fax
-     *
-     * @param fax new value of fax
-     */
-    public void setFax(String fax) {
-        this.fax = fax;
-    }
+    @Column
+    public String fax;
 
     // email
-    
-    private String email;
 
-    /**
-     * Get the value of email
-     *
-     * @return the value of email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Set the value of email
-     *
-     * @param email new value of email
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    @Column
+    public String email;
 
     // creditLimit
     
     @Column(name = "CREDIT_LIMIT")
-    private Integer creditLimit;
-
-    /**
-     * Get the value of creditLimit
-     *
-     * @return the value of creditLimit
-     */
-    public Integer getCreaditLimit() {
-        return creditLimit;
-    }
-
-    /**
-     * Set the value of creditLimit
-     *
-     * @param creditLimit new value of creditLimit
-     */
-    public void setCreditLimit(Integer creditLimit) {
-        this.creditLimit = creditLimit;
-    }
+    public Integer creditLimit;
 
     // ******************** Constructors *******************
     
@@ -300,6 +93,12 @@ public class Customer implements Serializable {
         this.id = id;
     }
 
+    public Customer(Integer id, String discountCode, String zip) {
+        this.id = id;
+        this.discountCode = discountCode;
+        this.zip = zip;
+    }
+    
     // ******************** Equals & HashCode *******************
     
     @Override

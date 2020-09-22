@@ -6,7 +6,7 @@
  * 
  * Copyright 2005-2020 LionSoft LLC. All rights reserved.
  */
-package ru.lionsoft.javase.hello.db.jdbc.facades;
+package ru.lionsoft.javase.hello.db.jdbc.orm;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -18,25 +18,25 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import ru.lionsoft.javase.hello.db.jdbc.annotation.Column;
-import ru.lionsoft.javase.hello.db.jdbc.annotation.PrimaryKey;
-import ru.lionsoft.javase.hello.db.jdbc.annotation.Table;
+import ru.lionsoft.javase.hello.db.jdbc.orm.annotation.Column;
+import ru.lionsoft.javase.hello.db.jdbc.orm.annotation.Id;
+import ru.lionsoft.javase.hello.db.jdbc.orm.annotation.Table;
 
 /**
  * Фабрика создания сущностей
  * @author Igor Morenko <morenko at lionsoft.ru>
  * @param <E> тип сущности
  */
-public class EntityFabric<E> {
+public class EntityFactory<E> {
 
     /** Журнал */
-    private static final Logger LOG = Logger.getLogger(EntityFabric.class.getName());
+    private static final Logger LOG = Logger.getLogger(EntityFactory.class.getName());
     
     /**
      * Кэш экземпляров фабрик для сущностей 
      * (чтобы исключить повторное изучение классов)
      */
-    private static final Map<Class, EntityFabric> INSTANCES = new HashMap<>();
+    private static final Map<Class, EntityFactory> INSTANCES = new HashMap<>();
     
     /**
      * Фабричный метод создания экземпляра фабрики для сущности
@@ -44,13 +44,13 @@ public class EntityFabric<E> {
      * @param entityClass класс сущности
      * @return экземпляр фабрики сущности
      */
-    public static <E> EntityFabric<E> newInstance(Class<E> entityClass) {
-        EntityFabric fabric = INSTANCES.get(entityClass);
-        if (fabric == null) {
-            fabric = new EntityFabric<>(entityClass);
-            INSTANCES.put(entityClass, fabric);
+    public static <E> EntityFactory<E> newInstance(Class<E> entityClass) {
+        EntityFactory factory = INSTANCES.get(entityClass);
+        if (factory == null) {
+            factory = new EntityFactory<>(entityClass);
+            INSTANCES.put(entityClass, factory);
         }
-        return fabric;
+        return factory;
     }
 
     // ********************* Fields ***********************
@@ -68,7 +68,7 @@ public class EntityFabric<E> {
     /**
      * Название колонки с первичным ключом
      */
-    private String primaryKey;
+    private String idColumnName;
     
     /**
      * Мапинг колонок таблицы с полями класса сущностиы
@@ -81,7 +81,7 @@ public class EntityFabric<E> {
      * Конструктор фабрики сущности
      * @param entityClass класс сущности
      */
-    public EntityFabric(Class<E> entityClass) {
+    private EntityFactory(Class<E> entityClass) {
         // entity class
         this.entityClass = entityClass;
         
@@ -107,16 +107,19 @@ public class EntityFabric<E> {
             columns.put(columnName, field);
             
             // primary key
-            if (field.getAnnotation(PrimaryKey.class) != null) {
-                primaryKey = columnName;
+            if (field.getAnnotation(Id.class) != null) {
+                idColumnName = columnName;
+//                if (!columns.containsKey(columnName) {
+//                    columns.put(columnName, field);
+//                }
             }
         }
         LOG.log(Level.INFO, 
                 "Create fabric for Entity: {0}\n"
                 + "  tableName: {1}\n"
-                + "  primaryKeyColumn: {2}\n"
+                + "  idColumnName: {2}\n"
                 + "  columns: {3}",
-                new Object[]{entityClass.getName(), tableName, primaryKey, columns.keySet()});
+                new Object[]{entityClass.getName(), tableName, idColumnName, columns.keySet()});
     }
     
     // ****************** Methods **********************
@@ -133,8 +136,8 @@ public class EntityFabric<E> {
      * Получить имя колонки табоицы первичного ключа сущности
      * @return имя колонки первичного ключа
      */
-    public String getPrimaryKeyColumnName() {
-        return primaryKey;
+    public String getIdColumnName() {
+        return idColumnName;
     }
     
     /**
@@ -172,11 +175,21 @@ public class EntityFabric<E> {
      * Сформировать SQL запроса данных из таблицы СУБД для сущности по первичному ключу
      * @return SQL текст для выборки данных из таблицы СУБД
      */
-    public String getSqlSelect() {
-        return  new StringBuilder("SELECT * FROM ")
+    public String getSqlFindAll() {
+        return new StringBuilder("SELECT * FROM ")
+                    .append(tableName)
+                    .toString();        
+    }
+    
+    /**
+     * Сформировать SQL запроса данных из таблицы СУБД для сущности по первичному ключу
+     * @return SQL текст для выборки данных из таблицы СУБД
+     */
+    public String getSqlFindById() {
+        return new StringBuilder("SELECT * FROM ")
                     .append(tableName)
                     .append(" WHERE ")
-                    .append(primaryKey)
+                    .append(idColumnName)
                     .append("=?")
                     .toString();        
     }
@@ -216,9 +229,9 @@ public class EntityFabric<E> {
             sb.append(columnName).append("=?");
         }
         return  sb.append(" WHERE ")
-                    .append(primaryKey)
+                    .append(idColumnName)
                     .append("=?")
-                    .toString();        
+                    .toString();
     }
     
     /**
@@ -229,9 +242,9 @@ public class EntityFabric<E> {
         return  new StringBuilder("DELETE FROM ")
                     .append(tableName)
                     .append(" WHERE ")
-                    .append(primaryKey)
+                    .append(idColumnName)
                     .append("=?")
-                    .toString();        
+                    .toString();
     }
     
     /**
@@ -270,7 +283,7 @@ public class EntityFabric<E> {
                 LOG.log(Level.SEVERE, "Set Parameter for Prepared Statement UPDATE", ex);
             }
         }
-        Field primaryKeyFiled = columns.get(primaryKey);
+        Field primaryKeyFiled = columns.get(idColumnName);
         try {
             pstmt.setObject(i++, primaryKeyFiled.get(entity));
         } catch (IllegalAccessException | IllegalArgumentException ex) {
@@ -285,7 +298,7 @@ public class EntityFabric<E> {
      * @throws SQLException ошибка SQL
      */
     public void setParameterForDelete(PreparedStatement pstmt, E entity) throws SQLException {
-        Field primaryKeyFiled = columns.get(primaryKey);
+        Field primaryKeyFiled = columns.get(idColumnName);
         try {
             pstmt.setObject(1, primaryKeyFiled.get(entity));
         } catch (IllegalAccessException | IllegalArgumentException ex) {

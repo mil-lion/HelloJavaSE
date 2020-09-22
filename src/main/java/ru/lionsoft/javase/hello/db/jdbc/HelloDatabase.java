@@ -152,16 +152,17 @@ public class HelloDatabase {
         Random r = new Random();
         
         // insert
-        Customer newCustomer = new Customer(generateId());
-        newCustomer.setDiscountCode("H");
-        newCustomer.setZip("94401");
-        newCustomer.setName("XXX" + r.nextInt(9));
+        int id = genId();
+        Customer newCustomer = new Customer(id);
+        newCustomer.discountCode = "H";
+        newCustomer.zip = "94401";
+        newCustomer.name = "XXX" + r.nextInt(9);
         
-        customerFacade.insert(newCustomer);
+        customerFacade.create(newCustomer);
         connection.commit();
         
         // update
-        newCustomer.setEmail(newCustomer.getName().toLowerCase() + "@mail.ru");
+        newCustomer.email = newCustomer.name.toLowerCase() + "@mail.ru";
         
         customerFacade.update(newCustomer);
         connection.commit();
@@ -171,7 +172,7 @@ public class HelloDatabase {
         connection.commit();
     }
     
-    private int generateId() {
+    private int genId() {
         return (int)System.nanoTime() & 0x7fffffff;
     }
 }

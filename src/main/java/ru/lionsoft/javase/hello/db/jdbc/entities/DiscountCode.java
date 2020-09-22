@@ -11,12 +11,12 @@ package ru.lionsoft.javase.hello.db.jdbc.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
-import ru.lionsoft.javase.hello.db.jdbc.annotation.Column;
-import ru.lionsoft.javase.hello.db.jdbc.annotation.PrimaryKey;
-import ru.lionsoft.javase.hello.db.jdbc.annotation.Table;
+import ru.lionsoft.javase.hello.db.jdbc.orm.annotation.Column;
+import ru.lionsoft.javase.hello.db.jdbc.orm.annotation.Id;
+import ru.lionsoft.javase.hello.db.jdbc.orm.annotation.Table;
 
 /**
- *
+ * Сущность Скидка
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
 @Table(name = "DISCOUNT_CODE")
@@ -28,49 +28,14 @@ public class DiscountCode implements Serializable {
     
     // discountCode
     
-    @PrimaryKey
+    @Id
     @Column(name = "DISCOUNT_CODE")
-    private String code;
-
-    /**
-     * Get the value of code
-     *
-     * @return the value of code
-     */
-    public String getCode() {
-        return code;
-    }
-
-    /**
-     * Set the value of code
-     *
-     * @param code new value of code
-     */
-    public void setCode(String code) {
-        this.code = code;
-    }
+    public String code;
 
     // rate
     
-    private BigDecimal rate;
-
-    /**
-     * Get the value of rate
-     *
-     * @return the value of rate
-     */
-    public BigDecimal getRate() {
-        return rate;
-    }
-
-    /**
-     * Set the value of rate
-     *
-     * @param rate new value of rate
-     */
-    public void setRate(BigDecimal rate) {
-        this.rate = rate;
-    }
+    @Column
+    public BigDecimal rate;
 
     // ******************** Constructors *******************
     

@@ -22,7 +22,7 @@ import ru.lionsoft.javase.hello.db.jdbc.entities.Customer;
  * Фасад для сущности Клиент
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
-public class CustomerFacade extends AbstractFacade<Customer> {
+public class CustomerFacade extends AbstractFacade<Customer, Integer> {
 
     /** Журнал */
     private static final Logger LOG = Logger.getLogger(CustomerFacade.class.getName());
@@ -49,7 +49,7 @@ public class CustomerFacade extends AbstractFacade<Customer> {
             pstmt.setString(1, name);
             try (ResultSet rs = pstmt.executeQuery();) {
                 while (rs.next()) {
-                    customers.add(fabric.createEntity(rs));
+                    customers.add(factory.createEntity(rs));
                 }
             }
         }

@@ -16,7 +16,7 @@ import ru.lionsoft.javase.hello.db.jdbc.entities.MicroMarket;
  * Фасад для сущности Магазин
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
-public class MicroMarketFacade extends AbstractFacade<MicroMarket> {
+public class MicroMarketFacade extends AbstractFacade<MicroMarket, String> {
 
     /** Журнал */
     private static final Logger LOG = Logger.getLogger(MicroMarketFacade.class.getName());
