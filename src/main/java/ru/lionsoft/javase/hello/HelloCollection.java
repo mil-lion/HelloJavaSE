@@ -9,6 +9,7 @@
 package ru.lionsoft.javase.hello;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,6 +21,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -38,7 +40,11 @@ public class HelloCollection {
         app.testSet();
         app.testList();
         app.testMap();
+        app.testNoGeneric();
         
+        // Thread Safe ArrayList
+        List<String> syncronizedList = Collections.synchronizedList(new ArrayList<>()); // decorator
+
     }
 
     public void testCollection() {
@@ -66,33 +72,33 @@ public class HelloCollection {
         }
         printCollection("intSet", intSet);
         
-        Set<BoxGeneric> boxSet1 = new HashSet<>();
-        boxSet1.add(new BoxGeneric());
+        Set<Box> boxSet1 = new HashSet<>(); // E1.hashCode()==E2.hashCode() && E1.equals(E2)
+        boxSet1.add(new Box());
         boxSet1.add(null); // ok!
-        boxSet1.add(new BoxGeneric(1, 2, 3));
-        boxSet1.add(new BoxGeneric(3, 2, 1));
-        boxSet1.add(new BoxGeneric(10));
-        boxSet1.add(new BoxGeneric(BoxGeneric.TypeSize.Default));
-        boxSet1.add(new BoxGeneric(BoxGeneric.TypeSize.Large));
-        boxSet1.add(new BoxGeneric(BoxGeneric.TypeSize.Small));
-        boxSet1.add(new BoxGeneric(BoxGeneric.TypeSize.Medium));
-        boxSet1.add(new BoxGeneric(1, 2, 3));
-        boxSet1.add(new BoxGeneric(1));
+        boxSet1.add(new Box(1, 2, 3));
+        boxSet1.add(new Box(3, 2, 1));
+        boxSet1.add(new Box(10));
+        boxSet1.add(new Box(Box.TypeSize.Default));
+        boxSet1.add(new Box(Box.TypeSize.Large));
+        boxSet1.add(new Box(Box.TypeSize.Small));
+        boxSet1.add(new Box(Box.TypeSize.Medium));
+        boxSet1.add(new Box(1, 2, 3));
+        boxSet1.add(new Box(1));
         System.out.println("boxSet1.size = " + boxSet1.size());
         printCollection("boxSet1", boxSet1);
         
-        Set<BoxGeneric> boxSet2 = new TreeSet<>();
-        boxSet2.add(new BoxGeneric());
+        SortedSet<Box> boxSet2 = new TreeSet<>(); // E1.compareTo(E2)
+        boxSet2.add(new Box());
 //        boxSet2.add(null); // TreeSet не может содержать элемент null
-        boxSet2.add(new BoxGeneric(1, 2, 3));
-        boxSet2.add(new BoxGeneric(3, 2, 1));
-        boxSet2.add(new BoxGeneric(10));
-        boxSet2.add(new BoxGeneric(BoxGeneric.TypeSize.Default));
-        boxSet2.add(new BoxGeneric(BoxGeneric.TypeSize.Large));
-        boxSet2.add(new BoxGeneric(BoxGeneric.TypeSize.Small));
-        boxSet2.add(new BoxGeneric(BoxGeneric.TypeSize.Medium));
-        boxSet2.add(new BoxGeneric(1, 2, 3));
-        boxSet2.add(new BoxGeneric(1));
+        boxSet2.add(new Box(1, 2, 3)); // volume = 6
+        boxSet2.add(new Box(3, 2, 1)); // volume = 6
+        boxSet2.add(new Box(10));
+        boxSet2.add(new Box(Box.TypeSize.Default));
+        boxSet2.add(new Box(Box.TypeSize.Large));
+        boxSet2.add(new Box(Box.TypeSize.Small));
+        boxSet2.add(new Box(Box.TypeSize.Medium));
+        boxSet2.add(new Box(1, 2, 3));
+        boxSet2.add(new Box(1));
         System.out.println("boxSet2.size = " + boxSet2.size());
         printCollection("boxSet2", boxSet2);
         
@@ -165,8 +171,65 @@ public class HelloCollection {
         }
         printMap("disct1", dict1);
         printMap("disct2", dict2);
+        
+        // ########## Collection of Collection ##############
+        
+        String[] ru = {"Ноль", "Один", "Два", "Три", "Четрые", "Пять", "Шесть", "Семь", "Восемь", "Девять", "Десять"};
+        String[] en = {"Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"};
+        String[] de = {"Zero", "Eins", "Zwei", "Drei", "Vier", "Fünf", "Sechs", "Sieben", "Acht", "Neun", "Zehn"};
+
+        Map<String, List<String>> dict3 = new HashMap<>();
+        dict3.put("ru", Arrays.asList(ru));
+        dict3.put("en", Arrays.asList(en));
+        dict3.put("de", Arrays.asList(de));
+
+        System.out.println("dict3[ru][6] = " + dict3.get("ru").get(6));
+        System.out.println("dict3[en][8] = " + dict3.get("en").get(8));
+        System.out.println("dict3[de][5] = " + dict3.get("de").get(5));
+
+        Map<String, String[]> dict4 = new HashMap<>();
+        dict4.put("ru", ru);
+        dict4.put("en", en);
+        dict4.put("de", de);
+        System.out.println("dict4[ru][6] = " + dict4.get("ru")[6]);
+        System.out.println("dict4[en][8] = " + dict4.get("en")[8]);
+        System.out.println("dict4[de][5] = " + dict4.get("de")[5]);
+                
     }
 
+    public void testNoGeneric() {
+        System.out.println("\nru.lionsoft.javase.hello.HelloCollection.testNoGeneric()");
+        
+        // No Generic Type
+        Collection intCol2 = new ArrayList();
+        intCol2.add(1); // boxing Integer
+        intCol2.add(new Integer(2));
+        intCol2.add(Integer.valueOf(3));
+        intCol2.add(40);
+        intCol2.add("5"); // String
+        int sum = 0;
+        for (Object x : intCol2) {
+            if (x instanceof Integer) {
+                sum += (int)x; // unboxing
+            }
+        }
+        System.out.println("sum = " + sum);
+        
+        // Generic Type
+        Collection<Integer> intCol3 = new ArrayList();
+        intCol3.add(1);
+        intCol3.add(2);
+        intCol3.add(3);
+        intCol3.add(40);
+//        intCol3.add("5"); // String
+        sum = 0;
+        for (Integer x : intCol3) {
+            sum += x; // unboxing
+        }
+        System.out.println("sum = " + sum);
+
+    }
+    
     public void printCollection(String name, Collection collection) {
         System.out.println(name + " = " + collectionToString(collection));
     }
@@ -193,11 +256,12 @@ public class HelloCollection {
         System.out.println(sb.append(" ]").toString());
     }
 
-    public void printMap(String name, Map map) {
+    public void printMap(String name, Map<?,?> map) {
         System.out.println(name + ":");
-        for (Object e : map.entrySet()) {
-            Map.Entry entry = (Map.Entry) e;
-            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        for (Map.Entry<?, ?> entry : map.entrySet()) {
+            Object key = entry.getKey();
+            Object val = entry.getValue();
+            System.out.println(key + " -> " + val);
         }
     }
 
