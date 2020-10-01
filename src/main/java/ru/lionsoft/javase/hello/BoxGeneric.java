@@ -10,7 +10,6 @@ package ru.lionsoft.javase.hello;
 
 import java.awt.Color;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * Класс описывающий объект коробка
@@ -38,7 +37,7 @@ public class BoxGeneric<T extends Number>
     /**
      * Перечисление стандартных типоразмеров коробки
      */
-    public static enum TypeSize {
+    public enum TypeSize {
         /** По умолчанию */
         Default,
         /** Малая */

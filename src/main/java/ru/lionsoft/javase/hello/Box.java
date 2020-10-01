@@ -1,5 +1,5 @@
 /*
- * File:    BoxGeneric.java
+ * File:    Box.java
  * Project: HelloJavaSE
  * Date:    23 нояб. 2018 г. 18:39:49
  * Author:  Igor Morenko <morenko at lionsoft.ru>
@@ -36,7 +36,7 @@ public class Box
     /**
      * Перечисление стандартных типоразмеров коробки
      */
-    public static enum TypeSize {
+    public enum TypeSize {
         /** По умолчанию */
         Default,
         /** Малая */
