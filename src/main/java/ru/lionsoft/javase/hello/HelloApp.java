@@ -245,6 +245,18 @@ public class HelloApp {
                 System.out.println("число не равно 1, 8, 9");
         }
         
+        // for JDK12+ (--enable-preview), JDK14+        
+        System.out.println("#### Конструкция rule switch (JDK12+ lambda):");
+        switch (num) {
+            case 1 -> System.out.println("число равно 1");
+            case 8 -> { 
+                System.out.println("число равно 8");
+                num++;
+            }
+            case 9 -> System.out.println("число равно 9");
+            default -> System.out.println("число не равно 1, 8, 9");
+        }
+        
         System.out.println("#### Конструкция switch с несколькими case:");
         num = 3;
         int output;
@@ -276,8 +288,8 @@ public class HelloApp {
 //        };
 //        System.out.println(output);
 
-        // for JDK12+ (--enable-preview)
-        System.out.println("#### Конструкция switch с несколькими case (JDK12+ lambda):");
+        // for JDK12+ (--enable-preview), JDK14+
+        System.out.println("#### Конструкция switch expression с несколькими case (JDK12+ lambda):");
         num = 5;
         output = switch (num) {
             case 1       -> 3;
@@ -293,6 +305,18 @@ public class HelloApp {
         int z = x < y ? (x + y) : (x - y);
         System.out.println(z);
 
+        System.out.println("#### Примеры switch:");
+        int month = (int) (Math.random() * 12 + 1);
+        System.out.println("daysOfMonth1(" + month + ") = " + daysOfMonth1(month));
+        System.out.println("daysOfMonth2(" + month + ") = " + daysOfMonth2(month));
+
+        System.out.println("daysOfMonth1(2, 2019) = " + daysOfMonth1(2, 2019));
+        System.out.println("daysOfMonth1(2, 2020) = " + daysOfMonth1(2, 2020));
+        System.out.println("daysOfMonth1(2, 2021) = " + daysOfMonth1(2, 2021));
+        System.out.println("daysOfMonth2(2, 2019) = " + daysOfMonth2(2, 2019));
+        System.out.println("daysOfMonth2(2, 2020) = " + daysOfMonth2(2, 2020));
+        System.out.println("daysOfMonth2(2, 2021) = " + daysOfMonth2(2, 2021));
+        
     }
     
     /**
@@ -345,6 +369,104 @@ public class HelloApp {
             System.out.print(x + " ");
         }
         System.out.println();
+    }
+    
+    /**
+     * Функция получения количества дней в месяце
+     * @param month номер месяца
+     * @return количество дней в месяце
+     */
+    public static int daysOfMonth1(int month) {
+        switch(month) {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                return 31;
+            case 2:
+                return 28;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                return 30;
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * Функция получения количества дней в месяце
+     * @param month номер месяца
+     * @return количество дней в месяце
+     * @since JDK14
+     */
+    public static int daysOfMonth2(int month) {
+        // use switch expression
+        return switch (month) {
+            case 1, 3, 5, 7, 8, 10, 12 -> 31;
+            case 2 -> 28;
+            case 4, 6, 9, 11 -> 30;
+            default -> 0;
+        };
+    }
+
+    /**
+     * Функция получения количества дней в месяце
+     * @param month номер месяца
+     * @param year год
+     * @return количество дней в месяце
+     */
+    public static int daysOfMonth1(int month, int year) {
+        switch(month) {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                return 31;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                return 30;
+            case 2:
+//                if (year % 4 == 0)
+//                    return 29;
+//                else
+//                    return 28;
+                return year % 4 == 0 ? 29 : 28;
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * Функция получения количества дней в месяце
+     * @param month номер месяца
+     * @param year год
+     * @return количество дней в месяце
+     * @since JDK14
+     */
+    public static int daysOfMonth2(int month, int year) {
+        // use switch expression
+        return switch (month) {
+            case 1, 3, 5, 7, 8, 10, 12 -> 31;
+            case 4, 6, 9, 11 -> 30;
+//            case 2 -> year % 4 == 0 ? 29 : 28;
+            case 2 ->  {
+                if (year % 4 == 0)
+                    yield 29;
+                else
+                    yield 28;
+            }
+            default -> 0;
+        };
     }
 
 }
