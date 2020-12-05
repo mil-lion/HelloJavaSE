@@ -14,6 +14,7 @@ package ru.lionsoft.javase.hello;
  */
 public class HelloApp {
     
+    // Константа
     public static final String HELLO  = "Hello World!";
     
     /**
@@ -24,6 +25,7 @@ public class HelloApp {
         // Согласно ООП обязательно создаем экземпляр класса и уже работаем с ним
         HelloApp app = new HelloApp();
         
+        app.битовыеОперации();
         app.условныеКонструкции();
         app.циклы();
         app.testVarArgs();
@@ -56,8 +58,201 @@ public class HelloApp {
 
     }
 
-    private void циклы() {
-        System.out.println("#### конструкция while");
+    /**
+     * Примеры битовых операций: NOT, AND, OR, XOR, Shift
+     */
+    public void битовыеОперации() {
+        byte b1 = 0b00101101;
+        byte b2 = 0b01001111;
+        System.out.println("\n#### Побитовая операция NOT:"); 
+        System.out.println("     b2 = " + NumberUtils.byteToBinaryString(b2));
+        System.out.println("    ~b2 = " + NumberUtils.byteToBinaryString((byte) (~b2)));
+        System.out.println("\n#### Побитовая операция AND:"); 
+        System.out.println("     b1 = " + NumberUtils.byteToBinaryString(b1));
+        System.out.println("     b2 = " + NumberUtils.byteToBinaryString(b2));
+        System.out.println("b1 & b2 = " + NumberUtils.byteToBinaryString((byte) (b1 & b2)));
+        System.out.println("\n#### Побитовая операция OR:"); 
+        System.out.println("     b1 = " + NumberUtils.byteToBinaryString(b1));
+        System.out.println("     b2 = " + NumberUtils.byteToBinaryString(b2));
+        System.out.println("b1 | b2 = " + NumberUtils.byteToBinaryString((byte) (b1 | b2)));
+        System.out.println("\n#### Побитовая операция XOR:"); 
+        System.out.println("     b1 = " + NumberUtils.byteToBinaryString(b1));
+        System.out.println("     b2 = " + NumberUtils.byteToBinaryString(b2));
+        System.out.println("b1 ^ b2 = " + NumberUtils.byteToBinaryString((byte) (b1 ^ b2)));
+        System.out.println("\n#### Побитовая операция Shift Left:"); 
+        int x = 12345;
+        System.out.println("x       = " + NumberUtils.intToBinaryString(x) + " (" + (x) + ")");
+        System.out.println("x << 1  = " + NumberUtils.intToBinaryString(x<<1)  + " (" + (x<<1) + ")");
+        System.out.println("x << 2  = " + NumberUtils.intToBinaryString(x<<2)  + " (" + (x<<2) + ")");
+        System.out.println("x << 10 = " + NumberUtils.intToBinaryString(x<<10) + " (" + (x<<10) + ")");
+        System.out.println("x << 20 = " + NumberUtils.intToBinaryString(x<<20) + " (" + (x<<20) + ")");
+
+        System.out.println("\n#### Побитовая операция Shift Right (signed):"); 
+        x = 12345;
+        System.out.println("Positive X");
+        System.out.println("x       = " + NumberUtils.intToBinaryString(x) + " (" + (x) + ")");
+        System.out.println("x >> 1  = " + NumberUtils.intToBinaryString(x>>1)  + " (" + (x>>1) + ")");
+        System.out.println("x >> 2  = " + NumberUtils.intToBinaryString(x>>2)  + " (" + (x>>2) + ")");
+        System.out.println("x >> 10 = " + NumberUtils.intToBinaryString(x>>10) + " (" + (x>>10) + ")");
+        System.out.println("x >> 20 = " + NumberUtils.intToBinaryString(x>>20) + " (" + (x>>20) + ")");
+        x = -12345;
+        System.out.println("Negative X");
+        System.out.println("x       = " + NumberUtils.intToBinaryString(x) + " (" + (x) + ")");
+        System.out.println("x >> 1  = " + NumberUtils.intToBinaryString(x>>1)  + " (" + (x>>1) + ")");
+        System.out.println("x >> 2  = " + NumberUtils.intToBinaryString(x>>2)  + " (" + (x>>2) + ")");
+        System.out.println("x >> 10 = " + NumberUtils.intToBinaryString(x>>10) + " (" + (x>>10) + ")");
+        System.out.println("x >> 20 = " + NumberUtils.intToBinaryString(x>>20) + " (" + (x>>20) + ")");
+
+        System.out.println("\n#### Побитовая операция Shift Right (unsigned):"); 
+        x = 12345;
+        System.out.println("Positive X");
+        System.out.println("x        = " + NumberUtils.intToBinaryString(x) + " (" + (x) + ")");
+        System.out.println("x >>> 1  = " + NumberUtils.intToBinaryString(x>>>1)  + " (" + (x>>>1) + ")");
+        System.out.println("x >>> 2  = " + NumberUtils.intToBinaryString(x>>>2)  + " (" + (x>>>2) + ")");
+        System.out.println("x >>> 10 = " + NumberUtils.intToBinaryString(x>>>10) + " (" + (x>>>10) + ")");
+        System.out.println("x >>> 20 = " + NumberUtils.intToBinaryString(x>>>20) + " (" + (x>>>20) + ")");
+        x = -12345;
+        System.out.println("Negative X");
+        System.out.println("x        = " + NumberUtils.intToBinaryString(x) + " (" + (x) + ")");
+        System.out.println("x >>> 1  = " + NumberUtils.intToBinaryString(x>>>1)  + " (" + (x>>>1) + ")");
+        System.out.println("x >>> 2  = " + NumberUtils.intToBinaryString(x>>>2)  + " (" + (x>>>2) + ")");
+        System.out.println("x >>> 10 = " + NumberUtils.intToBinaryString(x>>>10) + " (" + (x>>>10) + ")");
+        System.out.println("x >>> 20 = " + NumberUtils.intToBinaryString(x>>>20) + " (" + (x>>>20) + ")");
+    }
+
+    /**
+     * Примеры условных конструкций: if..then..else, switch..case..default
+     */
+    public void условныеКонструкции() {
+        System.out.println("\n#### Конструкция if:"); 
+        int num1 = 6;
+        int num2 = 4;
+        if (num1 > num2) {
+            System.out.println("Первое число больше второго");
+        }
+
+        System.out.println("\n#### Конструкция if-else:");
+        num1 = 6;
+        num2 = 4;
+        if (num1 > num2) {
+            System.out.println("Первое число больше второго");
+        } else {
+            System.out.println("Первое число меньше или равно второму");
+        }
+
+        System.out.println("\n#### Конструкция if-else-if:");
+        num1 = 6;
+        num2 = 8;
+        if (num1 > num2) {
+            System.out.println("Первое число больше второго");
+        } else if (num1 < num2) {
+            System.out.println("Первое число меньше второго");
+        } else {
+            System.out.println("Числа равны");
+        }
+        
+        System.out.println("\n#### Конструкция if с несколькими условиями:");
+        num1 = 8;
+        num2 = 6;
+        if (num1 > num2 && num1 > 7) {
+            System.out.println("Первое число больше второго и больше 7");
+        }
+
+        System.out.println("\n#### Конструкция switch:");
+        int num = 8;
+        switch (num) {
+            case 1: 
+                System.out.println("число равно 1");
+                break;
+            case 8: 
+                System.out.println("число равно 8");
+                num++;
+                break;
+            case 9: 
+                System.out.println("число равно 9");
+                break;
+            default:
+                System.out.println("число не равно 1, 8, 9");
+        }
+        
+        // for JDK12+ (--enable-preview), JDK14+        
+        System.out.println("\n#### Конструкция rule switch (JDK12+ lambda):");
+        switch (num) {
+            case 1 -> System.out.println("число равно 1");
+            case 8 -> { 
+                System.out.println("число равно 8");
+                num++;
+            }
+            case 9 -> System.out.println("число равно 9");
+            default -> System.out.println("число не равно 1, 8, 9");
+        }
+        
+        System.out.println("\n#### Конструкция switch с несколькими case:");
+        num = 3;
+        int output;
+        switch (num) {
+            case 1: 
+                output = 3;
+                break;
+            case 2: 
+            case 3: 
+            case 4: 
+                output = 6;
+                break;
+            case 5: 
+                output = 12;
+                break;
+            default:
+                output = 24;
+        }
+        System.out.println(output);
+        
+        // for JDK12 (--enable-preview)
+//        System.out.println("\n#### Конструкция switch с несколькими case (JDK12):");
+//        num = 2;
+//        output = switch (num) {
+//            case 1:       break 3;
+//            case 2, 3, 4: break num % 2 == 0 ? 6 : 7;
+//            case 5:       break 12;
+//            default:      break 24;
+//        };
+//        System.out.println(output);
+
+        // for JDK12+ (--enable-preview), JDK14+
+        System.out.println("\n#### Конструкция switch expression с несколькими case (JDK12+ lambda):");
+        num = 5;
+        output = switch (num) {
+            case 1       -> 3;
+            case 2, 3, 4 -> num % 2 == 0 ? 6 : 7;
+            case 5       -> 12;
+            default      -> 24;
+        };
+        System.out.println(output);
+
+        System.out.println("\n#### Тернарная операция:");
+        int x = 3;
+        int y = 2;
+        int z = x < y ? (x + y) : (x - y);
+        System.out.println(z);
+
+        System.out.println("\n#### Примеры switch:");
+        int month = (int) (Math.random() * 12 + 1);
+        System.out.println("daysOfMonth1(" + month + ") = " + daysOfMonth1(month));
+        System.out.println("daysOfMonth2(" + month + ") = " + daysOfMonth2(month));
+
+        System.out.println("daysOfMonth1(2, 2019) = " + daysOfMonth1(2, 2019));
+        System.out.println("daysOfMonth1(2, 2020) = " + daysOfMonth1(2, 2020));
+        System.out.println("daysOfMonth1(2, 2021) = " + daysOfMonth1(2, 2021));
+        System.out.println("daysOfMonth2(2, 2019) = " + daysOfMonth2(2, 2019));
+        System.out.println("daysOfMonth2(2, 2020) = " + daysOfMonth2(2, 2020));
+        System.out.println("daysOfMonth2(2, 2021) = " + daysOfMonth2(2, 2021));
+    }
+
+    /**
+     * Примеры циклов: while, do..while, for, for-each
+     */
+    public void циклы() {
+        System.out.println("\n#### конструкция while");
         int i = 0;
         while (i < 5) System.out.println(i++);
 
@@ -67,32 +262,43 @@ public class HelloApp {
             i--;
         }
 
-        System.out.println("#### конструкция do-while");
+        System.out.println("\n#### конструкция do-while");
         i = 0;
         do {
             System.out.println(i++);
         } while (i < 5);
 
-        System.out.println("#### конструкция for");
+        System.out.println("\n#### конструкция for");
         for (i = 0; i < 5; i++)
             System.out.println(i);
 
         for (int x = 0, y = 5; x < 5; x++, y -= 2)
             System.out.println("x = " + x + ", y = " + y);
 
-        System.out.println("#### конструкция for-each");
+        System.out.println("\n#### конструкция for-each");
         int[] array = { 1, 2, 3, 4, 5 };
         for (int x : array) {
             System.out.println(x);
         }
 
-        System.out.println("#### конструкция break-continue");
+        System.out.println("\n#### конструкция break-continue");
+        System.out.println("month days");
+        System.out.println("----- ----");
+        int days = 0;
+        for (int month = 1; month <= 12; month++) {
+            days += daysOfMonth2(month);
+            if (days > 256) break; // exit when day of programmer
+            if (month == 2) continue; // skip febrary
+            System.out.printf("%2d -> %d\n", month, daysOfMonth2(month));
+        }
+        
+        System.out.println("\n#### конструкция break-continue label");
         yearLoop: for (int year = 2010; year <= 2021; year++) {
             monthLoop: for (int month = 1; month <= 12; month++) {
-                System.out.println(year + "." + month);
+                System.out.printf("%4d.%02d\n", year, month);
 //                if (year < 2020) break;
                 if (year < 2020) continue yearLoop;
-                if (year == 2020 && month == 3) break yearLoop;
+                if (year == 2020 && month == 9) break yearLoop;
             }
         }
     }
@@ -188,135 +394,6 @@ public class HelloApp {
         System.out.println(name + ".perimeter     = " + box.getPerimeter() + " m");
         System.out.println(name + ".squareSurface = " + box.getSquareSurface() + " m\u00b2");
         System.out.println(name + ".volume        = " + box.getVolume() + " m\u00b3");
-    }
-
-    /**
-     * Примеры условных конструкций if..then..else, switch..case..default
-     */
-    public void условныеКонструкции() {
-        System.out.println("#### Конструкция if:"); 
-        int num1 = 6;
-        int num2 = 4;
-        if (num1 > num2) {
-            System.out.println("Первое число больше второго");
-        }
-
-        System.out.println("#### Конструкция if/else:");
-        num1 = 6;
-        num2 = 4;
-        if (num1 > num2) {
-            System.out.println("Первое число больше второго");
-        } else {
-            System.out.println("Первое число меньше или равно второму");
-        }
-
-        System.out.println("#### Конструкция if/else if:");
-        num1 = 6;
-        num2 = 8;
-        if (num1 > num2) {
-            System.out.println("Первое число больше второго");
-        } else if (num1 < num2) {
-            System.out.println("Первое число меньше второго");
-        } else {
-            System.out.println("Числа равны");
-        }
-        
-        System.out.println("#### Конструкция if с несколькими условиями:");
-        num1 = 8;
-        num2 = 6;
-        if (num1 > num2 && num1 > 7) {
-            System.out.println("Первое число больше второго и больше 7");
-        }
-
-        System.out.println("#### Конструкция switch:");
-        int num = 8;
-        switch (num) {
-            case 1: 
-                System.out.println("число равно 1");
-                break;
-            case 8: 
-                System.out.println("число равно 8");
-                num++;
-                break;
-            case 9: 
-                System.out.println("число равно 9");
-                break;
-            default:
-                System.out.println("число не равно 1, 8, 9");
-        }
-        
-        // for JDK12+ (--enable-preview), JDK14+        
-        System.out.println("#### Конструкция rule switch (JDK12+ lambda):");
-        switch (num) {
-            case 1 -> System.out.println("число равно 1");
-            case 8 -> { 
-                System.out.println("число равно 8");
-                num++;
-            }
-            case 9 -> System.out.println("число равно 9");
-            default -> System.out.println("число не равно 1, 8, 9");
-        }
-        
-        System.out.println("#### Конструкция switch с несколькими case:");
-        num = 3;
-        int output;
-        switch (num) {
-            case 1: 
-                output = 3;
-                break;
-            case 2: 
-            case 3: 
-            case 4: 
-                output = 6;
-                break;
-            case 5: 
-                output = 12;
-                break;
-            default:
-                output = 24;
-        }
-        System.out.println(output);
-        
-        // for JDK12 (--enable-preview)
-//        System.out.println("#### Конструкция switch с несколькими case (JDK12):");
-//        num = 2;
-//        output = switch (num) {
-//            case 1:       break 3;
-//            case 2, 3, 4: break num % 2 == 0 ? 6 : 7;
-//            case 5:       break 12;
-//            default:      break 24;
-//        };
-//        System.out.println(output);
-
-        // for JDK12+ (--enable-preview), JDK14+
-        System.out.println("#### Конструкция switch expression с несколькими case (JDK12+ lambda):");
-        num = 5;
-        output = switch (num) {
-            case 1       -> 3;
-            case 2, 3, 4 -> num % 2 == 0 ? 6 : 7;
-            case 5       -> 12;
-            default      -> 24;
-        };
-        System.out.println(output);
-
-        System.out.println("#### Тернарная операция:");
-        int x = 3;
-        int y = 2;
-        int z = x < y ? (x + y) : (x - y);
-        System.out.println(z);
-
-        System.out.println("#### Примеры switch:");
-        int month = (int) (Math.random() * 12 + 1);
-        System.out.println("daysOfMonth1(" + month + ") = " + daysOfMonth1(month));
-        System.out.println("daysOfMonth2(" + month + ") = " + daysOfMonth2(month));
-
-        System.out.println("daysOfMonth1(2, 2019) = " + daysOfMonth1(2, 2019));
-        System.out.println("daysOfMonth1(2, 2020) = " + daysOfMonth1(2, 2020));
-        System.out.println("daysOfMonth1(2, 2021) = " + daysOfMonth1(2, 2021));
-        System.out.println("daysOfMonth2(2, 2019) = " + daysOfMonth2(2, 2019));
-        System.out.println("daysOfMonth2(2, 2020) = " + daysOfMonth2(2, 2020));
-        System.out.println("daysOfMonth2(2, 2021) = " + daysOfMonth2(2, 2021));
-        
     }
     
     /**

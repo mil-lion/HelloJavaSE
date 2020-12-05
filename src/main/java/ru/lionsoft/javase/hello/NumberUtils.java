@@ -24,6 +24,15 @@ public class NumberUtils {
         return str.substring(str.length() - Byte.SIZE);
     }
 
+    public static String byteToBinaryString2(byte value) {
+        char[] buffer = new char[Byte.SIZE];
+        int mask = 0x80;
+        for (int i = 0; i < buffer.length; i++, mask >>>= 1) {
+            buffer[i] = (value & mask) == 0 ? '0' : '1';
+        }
+        return new String(buffer);
+    }
+
     /**
      * Преобразование {@code short} аргумента в строку в бинарном формате
      * @param value аргумент
