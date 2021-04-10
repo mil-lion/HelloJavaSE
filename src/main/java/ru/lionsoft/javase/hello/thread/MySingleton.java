@@ -14,6 +14,10 @@ package ru.lionsoft.javase.hello.thread;
  */
 public class MySingleton {
     
+    static {
+        System.out.println("@@@@ MySingleton Class Loaded!!!");
+    }
+    
     private MySingleton() {
         System.out.println("@@@@ MySingleton Created!!!");
     }

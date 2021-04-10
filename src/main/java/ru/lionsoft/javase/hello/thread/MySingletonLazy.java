@@ -14,6 +14,10 @@ package ru.lionsoft.javase.hello.thread;
  */
 public class MySingletonLazy {
     
+    static {
+        System.out.println("@@@@ MySingletonLazy Class Loaded!!!");
+    }
+    
     private MySingletonLazy() {
         System.out.println("@@@@ MySingletonLazy Created!!!");
     }
@@ -30,6 +34,20 @@ public class MySingletonLazy {
             }
         }
         return instance;
+    }
+    
+    // Way 2
+    public static MySingletonLazy getInstance2() {
+        if (instance == null) {
+            newInstance();
+        }
+        return instance;
+    }
+    
+    private static synchronized void newInstance() {
+        if (instance == null) {
+            instance = new MySingletonLazy();
+        }
     }
     
     public static void setUp() {

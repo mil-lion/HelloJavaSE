@@ -100,11 +100,12 @@ public class HelloSemaphore {
         
         Semaphore sem = new Semaphore(1); // 1 разрешение
         CommonResource res = new CommonResource();
-        for (int i = 0; i < 5; i++) {
-            new Thread(new CountThread(res, sem), "Thread #" + i).start();
-        }
         
-        Thread.sleep(5000);
+        Thread[] threades = new Thread[5];
+        for (int i = 0; i < threades.length; i++) {
+            threades[i] = new Thread(new CountThread(res, sem), "Thread #" + i);
+        }
+        ThreadUtil.startAndJoinThreads(threades);
         
         /*
          * Семафоры отлично подходят для решения задач, где надо ограничивать 
