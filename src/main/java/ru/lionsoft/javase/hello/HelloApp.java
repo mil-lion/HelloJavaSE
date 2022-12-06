@@ -229,6 +229,20 @@ public class HelloApp {
         };
         System.out.println(output);
 
+        // for JDK17+ (--enable-preview)
+//        System.out.println("\n#### Конструкция switch matcher (JDK17+ ):");
+//        Object[] objs = {5, 1.5, 2.5f, 1234567890L, "Match"};
+//        Object obj = objs[(int)(Math.random() * objs.length)];
+//        String out = switch (obj) {
+//            case Integer i -> String.format("int: %d", i);
+//            case Double  d -> String.format("double: %g", d);
+//            case Float   f -> String.format("int: %g", f);
+//            case Long    l -> String.format("int: %d", l);
+//            case String  s -> String.format("String: %s", s);
+//            default        -> String.format("%s: %s", obj.getClass().getName(), obj.toString());
+//        };
+//        System.out.println(out);
+
         System.out.println("\n#### Тернарная операция:");
         int x = 3;
         int y = 2;
