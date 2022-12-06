@@ -11,11 +11,16 @@ package ru.lionsoft.javase.hello.net;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import ru.lionsoft.javase.hello.db.jpa.entities.Customer;
 
 /**
  * Пример работы по сети
@@ -51,7 +56,7 @@ public class HelloNetwork {
     }
     
     public void testSocket() {
-                try {
+        try {
             System.out.println("#### test Soscket ####");
             // Connect
             try (Socket client = new Socket("levsha.lionsoft.ru", 80);) { // 212.12.17.62
@@ -79,4 +84,27 @@ public class HelloNetwork {
         }
     }
     
+    /**
+     * Пример использования встроенного HTTP клиента
+     * @param customer ссылка на сушность
+     */
+    public void updateCustomer(Customer customer) { 
+        try { 
+            URL url = new URL("http://www.example.com/customers"); 
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection(); 
+            connection.setDoOutput(true); 
+            connection.setInstanceFollowRedirects(false); 
+            connection.setRequestMethod("PUT"); 
+            connection.setRequestProperty("Content-Type", "application/xml"); 
+
+            OutputStream out = connection.getOutputStream(); 
+            JAXBContext.newInstance(Customer.class).createMarshaller().marshal(customer, out); 
+            out.flush(); 
+
+            connection.getResponseCode(); 
+            connection.disconnect(); 
+        } catch (IOException | JAXBException e) { 
+            LOG.log(Level.SEVERE, null, ex);
+        } 
+    }
 }
