@@ -103,7 +103,7 @@ public class HelloNetwork {
 
             connection.getResponseCode(); 
             connection.disconnect(); 
-        } catch (IOException | JAXBException e) { 
+        } catch (IOException | JAXBException ex) { 
             LOG.log(Level.SEVERE, null, ex);
         } 
     }
