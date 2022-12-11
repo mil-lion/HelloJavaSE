@@ -17,7 +17,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Тестирование класса Box с помощью фреймворка JUnit
+ * Тестирование класса BoxGeneric с помощью фреймворка JUnit
  * @author Igor Morenko <morenko at lionsoft.ru>
  */
 public class BoxTest {
@@ -42,12 +42,12 @@ public class BoxTest {
     }
 
     /**
-     * Test of getColor method, of class Box.
+     * Test of getColor method, of class BoxGeneric.
      */
     @Test
     public void testGetColor() {
         System.out.println("getColor");
-        Box instance = new Box();
+        BoxGeneric instance = new BoxGeneric();
         Color expResult = null;
         Color result = instance.getColor();
         assertEquals(expResult, result);
@@ -56,49 +56,49 @@ public class BoxTest {
     }
 
     /**
-     * Test of setColor method, of class Box.
+     * Test of setColor method, of class BoxGeneric.
      */
     @Test
     public void testSetColor() {
         System.out.println("setColor");
         Color color = null;
-        Box instance = new Box();
+        BoxGeneric instance = new BoxGeneric();
         instance.setColor(color);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of getWidth method, of class Box.
+     * Test of getWidth method, of class BoxGeneric.
      */
     @Test
     public void testGetWidth() {
         System.out.println("getWidth");
-        Box instance = new Box(2, 3, 4);
+        BoxGeneric instance = new BoxGeneric(2, 3, 4);
         Number expResult = 2;
         Number result = instance.getWidth();
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of setWidth method, of class Box.
+     * Test of setWidth method, of class BoxGeneric.
      */
     @Test
     public void testSetWidth() {
         System.out.println("setWidth");
         Number width = 2;
-        Box instance = new Box(1, 3, 4);
+        BoxGeneric instance = new BoxGeneric(1, 3, 4);
         instance.setWidth(width);
         assertEquals(width, instance.getWidth());
     }
 
     /**
-     * Test of getHeight method, of class Box.
+     * Test of getHeight method, of class BoxGeneric.
      */
     @Test
     public void testGetHeight() {
         System.out.println("getHeight");
-        Box instance = new Box();
+        BoxGeneric instance = new BoxGeneric();
         Number expResult = null;
         Number result = instance.getHeight();
         assertEquals(expResult, result);
@@ -107,25 +107,25 @@ public class BoxTest {
     }
 
     /**
-     * Test of setHeight method, of class Box.
+     * Test of setHeight method, of class BoxGeneric.
      */
     @Test
     public void testSetHeight() {
         System.out.println("setHeight");
         Number height = null;
-        Box instance = new Box();
+        BoxGeneric instance = new BoxGeneric();
         instance.setHeight(height);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of getLength method, of class Box.
+     * Test of getLength method, of class BoxGeneric.
      */
     @Test
     public void testGetLength() {
         System.out.println("getLength");
-        Box instance = new Box();
+        BoxGeneric instance = new BoxGeneric();
         Number expResult = null;
         Number result = instance.getLength();
         assertEquals(expResult, result);
@@ -134,25 +134,25 @@ public class BoxTest {
     }
 
     /**
-     * Test of setLength method, of class Box.
+     * Test of setLength method, of class BoxGeneric.
      */
     @Test
     public void testSetLength() {
         System.out.println("setLength");
         Number length = null;
-        Box instance = new Box();
+        BoxGeneric instance = new BoxGeneric();
         instance.setLength(length);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of getPerimeter method, of class Box.
+     * Test of getPerimeter method, of class BoxGeneric.
      */
     @Test
     public void testGetPerimeter() {
         System.out.println("getPerimeter");
-        Box instance = new Box();
+        BoxGeneric instance = new BoxGeneric();
         double expResult = 0.0;
         double result = instance.getPerimeter();
         assertEquals(expResult, result, 0.0);
@@ -161,12 +161,12 @@ public class BoxTest {
     }
 
     /**
-     * Test of getSquareSurface method, of class Box.
+     * Test of getSquareSurface method, of class BoxGeneric.
      */
     @Test
     public void testGetSquareSurface() {
         System.out.println("getSquareSurface");
-        Box instance = new Box();
+        BoxGeneric instance = new BoxGeneric();
         double expResult = 0.0;
         double result = instance.getSquareSurface();
         assertEquals(expResult, result, 0.0);
@@ -175,19 +175,19 @@ public class BoxTest {
     }
 
     /**
-     * Test of getVolume method, of class Box.
+     * Test of getVolume method, of class BoxGeneric.
      */
     @Test
     public void testGetVolume() {
         System.out.println("getVolume");
-        Box instance = new Box(2, 3, 4);
+        BoxGeneric instance = new BoxGeneric(2, 3, 4);
         double expResult = 24.0;
         double result = instance.getVolume();
         assertEquals(expResult, result, 0.0);
     }
 
     /**
-     * Test of perimeter method, of class Box.
+     * Test of perimeter method, of class BoxGeneric.
      */
     @Test
     public void testPerimeter() {
@@ -196,14 +196,14 @@ public class BoxTest {
         double height = 0.0;
         double length = 0.0;
         double expResult = 0.0;
-        double result = Box.perimeter(width, height, length);
+        double result = BoxGeneric.perimeter(width, height, length);
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of squareSurface method, of class Box.
+     * Test of squareSurface method, of class BoxGeneric.
      */
     @Test
     public void testSquareSurface() {
@@ -212,14 +212,14 @@ public class BoxTest {
         double height = 0.0;
         double length = 0.0;
         double expResult = 0.0;
-        double result = Box.squareSurface(width, height, length);
+        double result = BoxGeneric.squareSurface(width, height, length);
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of volume method, of class Box.
+     * Test of volume method, of class BoxGeneric.
      */
     @Test
     public void testVolume() {
@@ -228,53 +228,53 @@ public class BoxTest {
         double height = 0.0;
         double length = 0.0;
         double expResult = 0.0;
-        double result = Box.volume(width, height, length);
+        double result = BoxGeneric.volume(width, height, length);
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of compare method, of class Box.
+     * Test of compare method, of class BoxGeneric.
      */
     @Test
     public void testCompare() {
         System.out.println("compare");
-        Box b1 = null;
-        Box b2 = null;
+        BoxGeneric b1 = null;
+        BoxGeneric b2 = null;
         int expResult = 0;
-        int result = Box.compare(b1, b2);
+        int result = BoxGeneric.compare(b1, b2);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of open method, of class Box.
+     * Test of open method, of class BoxGeneric.
      */
     @Test
     public void testOpen() {
         System.out.println("open");
-        Box instance = new Box();
+        BoxGeneric instance = new BoxGeneric();
         instance.open();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of close method, of class Box.
+     * Test of close method, of class BoxGeneric.
      */
     @Test
     public void testClose() {
         System.out.println("close");
-        Box instance = new Box();
+        BoxGeneric instance = new BoxGeneric();
         instance.close();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of createBox method, of class Box.
+     * Test of createBox method, of class BoxGeneric.
      */
     @Test
     public void testCreateBox() {
@@ -282,34 +282,34 @@ public class BoxTest {
         Number width = null;
         Number height = null;
         Number length = null;
-        Box expResult = null;
-        Box result = Box.createBox(width, height, length);
+        BoxGeneric expResult = null;
+        BoxGeneric result = BoxGeneric.createBox(width, height, length);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of createStandardSizeBox method, of class Box.
+     * Test of createStandardSizeBox method, of class BoxGeneric.
      */
     @Test
     public void testCreateStandardSizeBox() {
         System.out.println("createStandardSizeBox");
         char type = ' ';
-        Box expResult = null;
-        Box result = Box.createStandardSizeBox(type);
+        BoxGeneric expResult = null;
+        BoxGeneric result = BoxGeneric.createStandardSizeBox(type);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of hashCode method, of class Box.
+     * Test of hashCode method, of class BoxGeneric.
      */
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        Box instance = new Box();
+        BoxGeneric instance = new BoxGeneric();
         int expResult = 0;
         int result = instance.hashCode();
         assertEquals(expResult, result);
@@ -318,13 +318,13 @@ public class BoxTest {
     }
 
     /**
-     * Test of equals method, of class Box.
+     * Test of equals method, of class BoxGeneric.
      */
     @Test
     public void testEquals() {
         System.out.println("equals");
         Object obj = null;
-        Box instance = new Box();
+        BoxGeneric instance = new BoxGeneric();
         boolean expResult = false;
         boolean result = instance.equals(obj);
         assertEquals(expResult, result);
@@ -333,13 +333,13 @@ public class BoxTest {
     }
 
     /**
-     * Test of compareTo method, of class Box.
+     * Test of compareTo method, of class BoxGeneric.
      */
     @Test
     public void testCompareTo() {
         System.out.println("compareTo");
-        Box o = null;
-        Box instance = new Box();
+        BoxGeneric o = null;
+        BoxGeneric instance = new BoxGeneric();
         int expResult = 0;
         int result = instance.compareTo(o);
         assertEquals(expResult, result);
@@ -348,12 +348,12 @@ public class BoxTest {
     }
 
     /**
-     * Test of toString method, of class Box.
+     * Test of toString method, of class BoxGeneric.
      */
     @Test
     public void testToString() {
         System.out.println("toString");
-        Box instance = new Box();
+        BoxGeneric instance = new BoxGeneric();
         String expResult = "";
         String result = instance.toString();
         assertEquals(expResult, result);
